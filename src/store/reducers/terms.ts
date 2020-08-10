@@ -1,6 +1,6 @@
 import { Reducer } from "redux";
 import { TermsState } from "../types";
-import { Term } from "../../data/entities";
+import { Term } from "data/entities";
 import { TERM_ACTION_TYPES } from "../actions/actionTypes";
 
 const initialState: TermsState = {
@@ -20,7 +20,7 @@ const termsReducer: Reducer = (state = initialState, action) => {
     case TERM_ACTION_TYPES.REMOVE_TERM: {
       const removedTermId = action.payload.id;
       return {
-        terms: state.data.filter((term: Term) => term.id !== removedTermId),
+        terms: state.terms.filter((term: Term) => term.id !== removedTermId),
         loading: false,
       };
     }

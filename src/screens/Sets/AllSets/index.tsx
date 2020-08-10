@@ -1,11 +1,12 @@
 import React, { useEffect, useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { StoreData } from "../../../store/types";
-import { actionCreators } from "../../../store/actions";
-import DBContext from "../../../db/index";
-import { Set } from "../../../data/entities";
-import Card from "../../../components/Card";
+import { StoreData } from "store/types";
+import { actionCreators } from "store/actions";
+import DBContext from "db/index";
+import { Set } from "data/entities";
+import Card from "components/Card";
+import Button from "components/Button";
 
 import styles from "./AllSets.module.scss";
 
@@ -34,14 +35,14 @@ function AllSets() {
   };
 
   return (
-    <div>
-      All Sets
+    <div className={styles["sets"]}>
+      <h1 className={styles["sets-title"]}>All Sets</h1>
       <div>
-        <button onClick={handleAddSet}>add set</button>
-        <div className={styles["sets-list"]}>
+        <Button onClick={handleAddSet}>add set</Button>
+        <div className={styles["sets-grid"]}>
           {sets.map((set) => (
             <Link key={set.id} to={`/sets/${set.id}`}>
-              <Card>
+              <Card className={styles["sets-grid__item"]}>
                 <div>{set.name}</div>
               </Card>
             </Link>

@@ -37,7 +37,7 @@ export const updateTerm = (term: Term): updateTermAction => ({
   payload: term,
 });
 
-export const removeTerm = (id: number): removeTermAction => ({
+export const removeTerm = (id: string): removeTermAction => ({
   type: TERM_ACTION_TYPES.REMOVE_TERM,
   payload: {
     id,

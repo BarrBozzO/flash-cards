@@ -34,7 +34,7 @@ export interface addTermAction extends Action<TERM_ACTION_TYPES.ADD_TERM> {
 export interface removeTermAction
   extends Action<TERM_ACTION_TYPES.REMOVE_TERM> {
   payload: {
-    id: number;
+    id: string;
   };
 }
 

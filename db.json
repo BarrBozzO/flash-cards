@@ -9,6 +9,11 @@
           "id": "first",
           "value": "Stall",
           "description": "Stop about engine"
+        },
+        {
+          "id": "second",
+          "value": "Pay off",
+          "description": "Eventually get profit from smth after many efforts"
         }
       ]
     }
@@ -17,7 +22,8 @@
     {
       "id": "first",
       "value": "Stall",
-      "description": "Stop about engine"
+      "description": "Stop about engine",
+      "set_id": "wof39ufjwofgjw"
     }
   ]
 }
