@@ -35,14 +35,15 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
 
   const [isAdding, setIsAdding] = useState(false);
 
-  const dispatchAddSet = (data: Set[] | Set) => {
-    dispatch(actionCreators.addSet(data));
-  };
-
   useEffect(() => {
-    DB.get("sets").then((sets: Set[]) => {
-      dispatchAddSet(sets);
-    });
+    dispatch(actionCreators.getSetsStart());
+    DB.get("sets")
+      .then((sets: Set[]) => {
+        dispatch(actionCreators.getSetsSuccess(sets));
+      })
+      .catch((err) => {
+        dispatch(actionCreators.getSetsError(err));
+      });
   }, [id]);
 
   if (typeof set === "undefined") {

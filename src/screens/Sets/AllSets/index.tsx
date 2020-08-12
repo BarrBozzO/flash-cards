@@ -20,9 +20,14 @@ function AllSets() {
   };
 
   useEffect(() => {
-    DB.get("sets").then((sets: Set[]) => {
-      dispatchAddSet(sets);
-    });
+    dispatch(actionCreators.getSetsStart());
+    DB.get("sets")
+      .then((sets: Set[]) => {
+        dispatch(actionCreators.getSetsSuccess(sets));
+      })
+      .catch((err) => {
+        dispatch(actionCreators.getSetsError(err));
+      });
   }, []);
 
   const handleAddSet = () => {

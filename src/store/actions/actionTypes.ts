@@ -7,6 +7,12 @@ export enum SET_ACTION_TYPES {
   UPDATE_SET = "UPDATE_SET",
 }
 
+export enum SETS_ACTION_TYPES {
+  SETS_FETCHING_START = "SETS_FETCHING_START",
+  SETS_FETCHING_SUCCESS = "GET_SETS_SUCCESS",
+  SETS_FETCHING_ERROR = "GET_SETS_ERROR",
+}
+
 export enum TERM_ACTION_TYPES {
   ADD_TERM = "ADD_TERM",
   REMOVE_TERM = "REMOVE_TERM",
@@ -25,6 +31,19 @@ export interface removeSetAction extends Action<SET_ACTION_TYPES.REMOVE_SET> {
 
 export interface updateSetAction extends Action<SET_ACTION_TYPES.UPDATE_SET> {
   payload: Set;
+}
+
+export interface getSetsAction
+  extends Action<SETS_ACTION_TYPES.SETS_FETCHING_START> {}
+
+export interface getSetsSuccessAction
+  extends Action<SETS_ACTION_TYPES.SETS_FETCHING_SUCCESS> {
+  payload: Set[];
+}
+
+export interface getSetsErrorAction
+  extends Action<SETS_ACTION_TYPES.SETS_FETCHING_ERROR> {
+  error: string;
 }
 
 export interface addTermAction extends Action<TERM_ACTION_TYPES.ADD_TERM> {

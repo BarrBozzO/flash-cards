@@ -1,14 +1,32 @@
 import {
   SET_ACTION_TYPES,
   TERM_ACTION_TYPES,
+  SETS_ACTION_TYPES,
   addSetAction,
   updateSetAction,
   removeSetAction,
   addTermAction,
   updateTermAction,
   removeTermAction,
+  getSetsAction,
+  getSetsErrorAction,
+  getSetsSuccessAction,
 } from "./actionTypes";
-import { Set, Term } from "../../data/entities";
+import { Set, Term } from "data/entities";
+
+export const getSetsStart = (): getSetsAction => ({
+  type: SETS_ACTION_TYPES.SETS_FETCHING_START,
+});
+
+export const getSetsSuccess = (sets: Set[]): getSetsSuccessAction => ({
+  type: SETS_ACTION_TYPES.SETS_FETCHING_SUCCESS,
+  payload: sets,
+});
+
+export const getSetsError = (error: string): getSetsErrorAction => ({
+  type: SETS_ACTION_TYPES.SETS_FETCHING_ERROR,
+  error,
+});
 
 export const addSet = (sets: Set | Set[]): addSetAction => ({
   type: SET_ACTION_TYPES.ADD_SET,

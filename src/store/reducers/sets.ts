@@ -1,15 +1,37 @@
 import { Reducer } from "redux";
 import { SetsState } from "../types";
 import { Set } from "../../data/entities";
-import { SET_ACTION_TYPES } from "../actions/actionTypes";
+import { SET_ACTION_TYPES, SETS_ACTION_TYPES } from "../actions/actionTypes";
 
 const initialState: SetsState = {
   sets: [],
+  error: null,
   loading: false,
 };
 
 const setsReducer: Reducer = (state = initialState, action) => {
   switch (action.type) {
+    case SETS_ACTION_TYPES.SETS_FETCHING_START: {
+      return {
+        ...state,
+        error: null,
+        loading: true,
+      };
+    }
+    case SETS_ACTION_TYPES.SETS_FETCHING_ERROR: {
+      return {
+        ...state,
+        error: action.error,
+        loading: false,
+      };
+    }
+    case SETS_ACTION_TYPES.SETS_FETCHING_SUCCESS: {
+      return {
+        sets: action.payload,
+        error: null,
+        loading: false,
+      };
+    }
     case SET_ACTION_TYPES.ADD_SET: {
       const sets = Array.isArray(action.payload)
         ? action.payload
