@@ -4,13 +4,13 @@ import React, {
   useContext,
   useState,
 } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { actionCreators } from "store/actions";
 import { match } from "react-router";
 import { Set, Term } from "data/entities";
 import Table, { TableRow } from "components/Table";
 import Button from "components/Button";
-import { StoreData } from "store/types";
+import useTypedSelector from "hooks/useTypedSelector";
 import DBContext from "db/index";
 import AddTermForm from "./AddTermForm";
 import { ReactComponent as DeleteIcon } from "assets/icons/delete.svg";
@@ -27,7 +27,7 @@ type Props = {
 
 const Terms: FunctionComponent<Props> = ({ match }) => {
   const id = match.params.id;
-  const set: Set | undefined = useSelector((state: StoreData) => {
+  const set: Set | undefined = useTypedSelector((state) => {
     return state.sets.sets.find((set: Set) => set.id === id);
   });
   const dispatch = useDispatch();

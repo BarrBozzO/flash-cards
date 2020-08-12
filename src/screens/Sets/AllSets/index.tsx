@@ -1,8 +1,8 @@
 import React, { useEffect, useContext } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { StoreData } from "store/types";
 import { actionCreators } from "store/actions";
+import useTypedSelector from "hooks/useTypedSelector";
 import DBContext from "db/index";
 import { Set } from "data/entities";
 import Card from "components/Card";
@@ -12,7 +12,7 @@ import styles from "./AllSets.module.scss";
 
 function AllSets() {
   const DB = useContext(DBContext);
-  const sets = useSelector((state: StoreData) => state.sets.sets);
+  const sets = useTypedSelector((state) => state.sets.sets);
   const dispatch = useDispatch();
 
   const dispatchAddSet = (data: Set[] | Set) => {
