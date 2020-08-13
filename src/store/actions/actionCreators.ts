@@ -38,16 +38,19 @@ export const updateSet = (set: Set): updateSetAction => ({
   payload: set,
 });
 
-export const removeSet = (id: number): removeSetAction => ({
+export const removeSet = (id: string): removeSetAction => ({
   type: SET_ACTION_TYPES.REMOVE_SET,
   payload: {
     id,
   },
 });
 
-export const addTerm = (term: Term): addTermAction => ({
+export const addTerm = (term: Term, setId: string): addTermAction => ({
   type: TERM_ACTION_TYPES.ADD_TERM,
-  payload: term,
+  payload: {
+    term,
+    setId,
+  },
 });
 
 export const updateTerm = (term: Term): updateTermAction => ({

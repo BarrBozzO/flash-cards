@@ -11,7 +11,8 @@ const initialState: TermsState = {
 const termsReducer: Reducer = (state = initialState, action) => {
   switch (action.type) {
     case TERM_ACTION_TYPES.ADD_TERM: {
-      const term = { ...action.payload };
+      const term = { ...action.payload.term };
+      const setId = action.payload.setId;
       return {
         terms: [...state.terms, term],
         loading: false,

@@ -26,9 +26,9 @@ type Props = {
 };
 
 const Terms: FunctionComponent<Props> = ({ match }) => {
-  const id = match.params.id;
+  const setId = match.params.id;
   const set: Set | undefined = useTypedSelector((state) => {
-    return state.sets.sets.find((set: Set) => set.id === id);
+    return state.sets.sets.find((set: Set) => set.id === setId);
   });
   const dispatch = useDispatch();
   const DB = useContext(DBContext);
@@ -44,7 +44,7 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
       .catch((err) => {
         dispatch(actionCreators.getSetsError(err));
       });
-  }, [id]);
+  }, [setId]);
 
   if (typeof set === "undefined") {
     return (
@@ -59,7 +59,7 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
   };
 
   const onCreateTerm = (term: Term) => {
-    dispatch(actionCreators.addTerm(term));
+    dispatch(actionCreators.addTerm(term, setId));
     setIsAdding(false);
   };
 

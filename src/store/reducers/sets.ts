@@ -1,7 +1,12 @@
 import { Reducer } from "redux";
 import { SetsState } from "../types";
-import { Set } from "../../data/entities";
-import { SET_ACTION_TYPES, SETS_ACTION_TYPES } from "../actions/actionTypes";
+import { Set } from "data/entities";
+import {
+  SET_ACTION_TYPES,
+  TERM_ACTION_TYPES,
+  SETS_ACTION_TYPES,
+  SETS_ACTION_CREATOR_TYPES,
+} from "../actions/actionTypes";
 
 const initialState: SetsState = {
   sets: [],
@@ -9,7 +14,10 @@ const initialState: SetsState = {
   loading: false,
 };
 
-const setsReducer: Reducer = (state = initialState, action) => {
+const setsReducer: Reducer = (
+  state = initialState,
+  action: SETS_ACTION_CREATOR_TYPES
+) => {
   switch (action.type) {
     case SETS_ACTION_TYPES.SETS_FETCHING_START: {
       return {
@@ -59,6 +67,31 @@ const setsReducer: Reducer = (state = initialState, action) => {
         ],
         loading: false,
       };
+    case TERM_ACTION_TYPES.ADD_TERM: {
+      const { term, setId } = action.payload;
+      const targetSetIndex = state.sets.findIndex(
+        (set: Set) => set.id === setId
+      );
+      const isNotFound = targetSetIndex === -1;
+
+      if (isNotFound) {
+        return state;
+      }
+
+      const targetSet = state.sets[targetSetIndex];
+
+      return {
+        sets: [
+          ...state.sets.slice(0, targetSetIndex),
+          {
+            ...targetSet,
+            terms: [...targetSet.terms, { ...term }],
+          },
+          ...state.sets.slice(targetSetIndex + 1, state.sets.length - 1),
+        ],
+        loading: false,
+      };
+    }
     default:
       return state;
   }
