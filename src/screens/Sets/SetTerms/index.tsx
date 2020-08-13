@@ -64,7 +64,7 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
   };
 
   const handleDeleteTerm = (id: string) => {
-    dispatch(actionCreators.removeTerm(id));
+    dispatch(actionCreators.removeTerm(id, setId));
   };
 
   return (

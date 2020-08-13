@@ -26,6 +26,7 @@ export interface addSetAction extends Action<SET_ACTION_TYPES.ADD_SET> {
 export interface removeSetAction extends Action<SET_ACTION_TYPES.REMOVE_SET> {
   payload: {
     id: string;
+    setId: string;
   };
 }
 
@@ -57,6 +58,7 @@ export interface removeTermAction
   extends Action<TERM_ACTION_TYPES.REMOVE_TERM> {
   payload: {
     id: string;
+    setId: string;
   };
 }
 
@@ -72,4 +74,5 @@ export type SETS_ACTION_CREATOR_TYPES =
   | getSetsAction
   | getSetsErrorAction
   | getSetsSuccessAction
-  | addTermAction;
+  | addTermAction
+  | removeTermAction;

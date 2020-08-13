@@ -92,6 +92,31 @@ const setsReducer: Reducer = (
         loading: false,
       };
     }
+    case TERM_ACTION_TYPES.REMOVE_TERM: {
+      const { id, setId } = action.payload;
+      const targetSetIndex = state.sets.findIndex(
+        (set: Set) => set.id === setId
+      );
+      const isNotFound = targetSetIndex === -1;
+
+      if (isNotFound) {
+        return state;
+      }
+
+      const targetSet: Set = state.sets[targetSetIndex];
+
+      return {
+        sets: [
+          ...state.sets.slice(0, targetSetIndex),
+          {
+            ...targetSet,
+            terms: targetSet.terms.filter((term) => term.id !== id),
+          },
+          ...state.sets.slice(targetSetIndex + 1, state.sets.length - 1),
+        ],
+        loading: false,
+      };
+    }
     default:
       return state;
   }
