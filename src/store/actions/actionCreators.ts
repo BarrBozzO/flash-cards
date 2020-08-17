@@ -54,9 +54,12 @@ export const addTerm = (term: Term, setId: string): addTermAction => ({
   },
 });
 
-export const updateTerm = (term: Term): updateTermAction => ({
+export const updateTerm = (term: Term, setId: string): updateTermAction => ({
   type: TERM_ACTION_TYPES.UPDATE_TERM,
-  payload: term,
+  payload: {
+    term,
+    setId,
+  },
 });
 
 export const removeTerm = (id: string, setId: string): removeTermAction => ({

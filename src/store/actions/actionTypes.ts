@@ -64,7 +64,10 @@ export interface removeTermAction
 
 export interface updateTermAction
   extends Action<TERM_ACTION_TYPES.UPDATE_TERM> {
-  payload: Term;
+  payload: {
+    term: Term;
+    setId: string;
+  };
 }
 
 export type SETS_ACTION_CREATOR_TYPES =
@@ -75,4 +78,5 @@ export type SETS_ACTION_CREATOR_TYPES =
   | getSetsErrorAction
   | getSetsSuccessAction
   | addTermAction
+  | updateTermAction
   | removeTermAction;

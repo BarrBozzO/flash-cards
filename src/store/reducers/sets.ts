@@ -69,6 +69,24 @@ const setsReducer: Reducer = produce(
 
         break;
       }
+      case TERM_ACTION_TYPES.UPDATE_TERM: {
+        const { term, setId } = action.payload;
+        const targetSetIndex = draft.sets.findIndex(
+          (set: Set) => set.id === setId
+        );
+        const isNotFound = targetSetIndex === -1;
+
+        if (!isNotFound) {
+          const updatedTermIndex = draft.sets[targetSetIndex].terms.findIndex(
+            (term) => term.id === term.id
+          );
+          if (updatedTermIndex > -1) {
+            draft.sets[targetSetIndex].terms[updatedTermIndex] = { ...term };
+          }
+        }
+
+        break;
+      }
       case TERM_ACTION_TYPES.REMOVE_TERM: {
         const { id, setId } = action.payload;
         const targetSetIndex = draft.sets.findIndex(
