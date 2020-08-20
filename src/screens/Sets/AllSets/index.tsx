@@ -31,12 +31,16 @@ function AllSets() {
   }, []);
 
   const handleAddSet = () => {
-    dispatchAddSet({
-      id: "#1",
+    const payload = {
       name: "awd",
       description: "awdda",
       terms: [],
-    });
+    };
+    DB.set<Partial<Set>, Set>("sets", payload)
+      .then((res) => {
+        dispatchAddSet(res);
+      })
+      .catch((err) => {});
   };
 
   return (

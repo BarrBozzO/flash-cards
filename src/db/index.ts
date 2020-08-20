@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext } from "react";
+import { v4 } from "uuid";
 
 class DB {
   private protocol: string = "http://";
@@ -14,6 +15,23 @@ class DB {
     return axios({
       method: "GET",
       url: `${this.path}/${dataName}`,
+    })
+      .then((response) => {
+        return response.data;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  set<T, R>(dataName: string, payload: T): Promise<R> {
+    return axios({
+      method: "POST",
+      url: `${this.path}/${dataName}`,
+      data: {
+        ...payload,
+        id: v4(),
+      },
     })
       .then((response) => {
         return response.data;
