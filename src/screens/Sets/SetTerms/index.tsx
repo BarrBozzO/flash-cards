@@ -11,7 +11,6 @@ import { Set, Term } from "data/entities";
 import Table, { TableRow } from "components/Table";
 import Button from "components/Button";
 import useTypedSelector from "hooks/useTypedSelector";
-import DBContext from "db/index";
 import AddTermForm from "./AddTermForm";
 import { ReactComponent as DeleteIcon } from "assets/icons/delete.svg";
 
@@ -31,20 +30,20 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
     return state.sets.sets.find((set: Set) => set.id === setId);
   });
   const dispatch = useDispatch();
-  const DB = useContext(DBContext);
+  // const DB = useContext(DBContext);
 
   const [isAdding, setIsAdding] = useState(false);
 
-  useEffect(() => {
-    dispatch(actionCreators.getSetsStart());
-    DB.get("sets")
-      .then((sets: Set[]) => {
-        dispatch(actionCreators.getSetsSuccess(sets));
-      })
-      .catch((err) => {
-        dispatch(actionCreators.getSetsError(err));
-      });
-  }, [setId]);
+  // useEffect(() => {
+  //   dispatch(actionCreators.getSetsStart());
+  //   DB.get("sets")
+  //     .then((sets: Set[]) => {
+  //       dispatch(actionCreators.getSetsSuccess(sets));
+  //     })
+  //     .catch((err) => {
+  //       dispatch(actionCreators.getSetsError(err));
+  //     });
+  // }, [setId]);
 
   if (typeof set === "undefined") {
     return (

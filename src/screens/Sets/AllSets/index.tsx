@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { actionCreators } from "store/actions";
 import useTypedSelector from "hooks/useTypedSelector";
-import DBContext from "db/index";
+import APIContext from "api/context";
 import { Set } from "data/entities";
 import Card from "components/Card";
 import Button from "components/Button";
@@ -11,7 +11,7 @@ import Button from "components/Button";
 import styles from "./AllSets.module.scss";
 
 function AllSets() {
-  const DB = useContext(DBContext);
+  const API = useContext(APIContext);
   const sets = useTypedSelector((state) => state.sets.sets);
   const dispatch = useDispatch();
 
@@ -19,16 +19,15 @@ function AllSets() {
     dispatch(actionCreators.addSet(data));
   };
 
-  useEffect(() => {
-    dispatch(actionCreators.getSetsStart());
-    DB.get("sets")
-      .then((sets: Set[]) => {
-        dispatch(actionCreators.getSetsSuccess(sets));
-      })
-      .catch((err) => {
-        dispatch(actionCreators.getSetsError(err));
-      });
-  }, []);
+  // useEffect(() => {
+  //   dispatch(actionCreators.getSetsStart());
+  //   API.sets.then((sets: Set[]) => {
+  //       dispatch(actionCreators.getSetsSuccess(sets));
+  //     })
+  //     .catch((err) => {
+  //       dispatch(actionCreators.getSetsError(err));
+  //     });
+  // }, []);
 
   const handleAddSet = () => {
     const payload = {
@@ -36,11 +35,11 @@ function AllSets() {
       description: "awdda",
       terms: [],
     };
-    DB.set<Partial<Set>, Set>("sets", payload)
-      .then((res) => {
-        dispatchAddSet(res);
+    API.addSet(payload)
+      .then((data: Set) => {
+        console.log(data);
       })
-      .catch((err) => {});
+      .catch(() => {});
   };
 
   return (

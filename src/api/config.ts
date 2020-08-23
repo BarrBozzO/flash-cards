@@ -1,7 +1,8 @@
 export type configType = {
   [key: string]: {
     name: string;
-    method: string;
+    method: "get" | "post" | "patch" | "delete" | "put";
+    url: string;
     initialState?: object;
   };
 };
@@ -9,12 +10,14 @@ export type configType = {
 const cfg: configType = {
   sets: {
     name: "sets",
-    method: "GET",
+    method: "get",
+    url: "sets",
     initialState: [],
   },
   addSet: {
     name: "addSet",
-    method: "POST",
+    url: "sets",
+    method: "post",
   },
 };
 
