@@ -1,19 +1,28 @@
 import { combineReducers, Reducer } from "redux";
-import config from "config";
-import setsReducer from "./sets";
-import termsReducer from "./terms";
-import { getReducer as getReducerCreator } from "./creators";
+import config, { configItem } from "config";
+import createReducer from "./creators";
 
 const generateReducers = () => {
   const collection: { [key: string]: Reducer } = {};
+  debugger;
+  const groupedConfig = Object.values(config).reduce(
+    (configByReducerName: { [key: string]: configItem[] }, item) => {
+      const reducerName = item.reducerName || item.name;
+      if (!configByReducerName[reducerName]) {
+        configByReducerName[reducerName] = [item];
+      } else {
+        configByReducerName[reducerName].push(item);
+      }
 
-  Object.values(config).map((item) => {
-    const reducerName = item.reducerName || item.name;
-    const method = item.method;
-    const initialState = item.initialState || {};
+      return configByReducerName;
+    },
+    {}
+  );
 
-    const reducer = getReducerCreator({ name: reducerName, initialState });
+  Object.keys(groupedConfig).map((reducerName) => {
+    const items = groupedConfig[reducerName];
 
+    const reducer = createReducer(items);
     collection[reducerName] = reducer;
   });
 

@@ -19,17 +19,17 @@ type actionType = Action & {
 
 export default function (params: paramsType) {
   return {
-    [`GET_${name}_SUCCESS`]: (draft: Draft<stateType>, action: actionType) => {
-      draft.data = action.payload;
+    [`POST_${name}_SUCCESS`]: (draft: Draft<stateType>, action: actionType) => {
+      draft.data.push(action.payload);
       draft.error = null;
       draft.loading = false;
       return draft;
     },
-    [`GET_${name}_LOADING`]: (draft: Draft<stateType>) => {
+    [`POST_${name}_LOADING`]: (draft: Draft<stateType>) => {
       draft.loading = true;
       return draft;
     },
-    [`GET_${name}_ERROR`]: (draft: Draft<stateType>, action: actionType) => {
+    [`POST_${name}_ERROR`]: (draft: Draft<stateType>, action: actionType) => {
       draft.data = params.initialState.data;
       draft.error = action.error as string;
       draft.loading = false;
