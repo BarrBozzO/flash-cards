@@ -1,5 +1,5 @@
 import { DB } from "db";
-import { configType } from "./config";
+import { configType } from "config";
 
 type customMethod = (payload: any) => Promise<any>;
 
