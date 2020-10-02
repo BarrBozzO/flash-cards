@@ -1,23 +1,33 @@
 import { combineReducers, Reducer } from "redux";
-import config, { configItem } from "config";
+import { configItem, configItemWithReducer, configType } from "api/config";
 import createReducer from "./creators";
 
-const generateReducers = () => {
-  const collection: { [key: string]: Reducer } = {};
-  debugger;
-  const groupedConfig = Object.values(config).reduce(
-    (configByReducerName: { [key: string]: configItem[] }, item) => {
-      const reducerName = item.reducerName || item.name;
-      if (!configByReducerName[reducerName]) {
-        configByReducerName[reducerName] = [item];
-      } else {
-        configByReducerName[reducerName].push(item);
-      }
+export const hasReducer = (item: configItem): item is configItemWithReducer => {
+  return item.hasOwnProperty("reducer");
+};
 
-      return configByReducerName;
-    },
-    {}
-  );
+export const generateReducers = (config: configType) => {
+  const collection: { [key: string]: Reducer } = {};
+
+  const groupedConfig = Object.values(config)
+    .filter(hasReducer)
+    .reduce(
+      (
+        configByReducerName: { [key: string]: configItemWithReducer[] },
+        item
+      ) => {
+        const reducerName = item.reducer.name as string;
+
+        if (!configByReducerName[reducerName]) {
+          configByReducerName[reducerName] = [item];
+        } else {
+          configByReducerName[reducerName].push(item);
+        }
+
+        return configByReducerName;
+      },
+      {}
+    );
 
   Object.keys(groupedConfig).map((reducerName) => {
     const items = groupedConfig[reducerName];
@@ -29,12 +39,12 @@ const generateReducers = () => {
   return collection;
 };
 
-const generatedReducers = generateReducers();
+export const createRootReducer = (config: configType): Reducer => {
+  const generatedReducers = generateReducers(config);
 
-const rootReducer: Reducer = combineReducers({
-  ...generatedReducers,
-});
+  return combineReducers({
+    ...generatedReducers,
+  });
+};
 
-export type RootState = ReturnType<typeof rootReducer>;
-
-export default rootReducer;
+// export type RootState = ReturnType<typeof rootReducer>;

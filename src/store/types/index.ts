@@ -1,7 +1,7 @@
 import { Set, Term } from "data/entities";
 
 export interface SetsState {
-  sets: Set[];
+  data: Set[];
   loading: boolean;
   error: string | null;
 }
@@ -15,3 +15,8 @@ export interface StoreData {
   sets: SetsState;
   terms: TermsState;
 }
+
+export type apiActionCreatorParams = {
+  payload?: any;
+  error?: string | null;
+};

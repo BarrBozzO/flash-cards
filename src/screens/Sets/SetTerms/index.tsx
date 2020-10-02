@@ -27,7 +27,7 @@ type Props = {
 const Terms: FunctionComponent<Props> = ({ match }) => {
   const setId = match.params.id;
   const set: Set | undefined = useTypedSelector((state) => {
-    return state.sets.sets.find((set: Set) => set.id === setId);
+    return state.sets.data.find((set: Set) => set.id === setId);
   });
   const dispatch = useDispatch();
   // const DB = useContext(DBContext);

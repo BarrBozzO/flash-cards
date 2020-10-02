@@ -2,7 +2,7 @@ import { Reducer, Action } from "redux";
 import produce, { Draft } from "immer";
 import getReducer from "./getReducer";
 import postReducer from "./postReducer";
-import { configItem } from "config";
+import { configItemWithReducer } from "api/config";
 
 type stateType = {
   data: any;
@@ -23,7 +23,7 @@ const METHOD_TO_REDUCER = {
   // "put": () => ({})
 };
 
-const createReducer = (items: configItem[]): Reducer => {
+const createReducer = (items: configItemWithReducer[]): Reducer => {
   let handlers: {
     [key: string]: Function;
   } = {};
@@ -34,11 +34,11 @@ const createReducer = (items: configItem[]): Reducer => {
   };
 
   items.forEach((item) => {
-    const itemInitState = item.initialState;
     const name = item.name;
+    const providedInitialState = item.reducer.initialState;
 
-    if (itemInitState) {
-      initialState.data = initialState;
+    if (providedInitialState) {
+      initialState.data = providedInitialState;
     }
 
     // @ts-ignore
@@ -52,7 +52,7 @@ const createReducer = (items: configItem[]): Reducer => {
 
   return produce((draft: Draft<stateType>, action: actionType) => {
     if (typeof handlers[action.type] === "function") {
-      handlers[action.type](draft);
+      handlers[action.type](draft, action);
     }
   }, initialState);
 };

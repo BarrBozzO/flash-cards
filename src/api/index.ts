@@ -1,23 +1,41 @@
+import { Dispatch, Store } from "redux";
 import { DB } from "db";
-import { configType } from "config";
+import config from "./config";
+import Provider from "./provider";
+import Context from "./context";
+import { getRouteActionCreators } from "store";
 
-type customMethod = (payload: any) => Promise<any>;
-
-class Api {
+export default class Api {
   private db: DB = new DB();
+  private dispatch: Dispatch;
   [key: string]: any;
 
-  constructor(config: configType) {
+  constructor(dispatch: Dispatch) {
+    this.dispatch = dispatch;
+
     for (const key in config) {
-      const item = config[key];
+      const route = config[key];
 
       this[key] = <T = any>(payload: any) => {
-        // const dbReq = this.db[item.method];
+        const [startReq, successReq, failReq] = getRouteActionCreators<T>(
+          route
+        );
 
-        return this.db[item.method](item.url, payload)
+        if (typeof startReq === "function") {
+          this.dispatch(startReq());
+        }
+        return this.db[route.method](route.url, payload)
           .then(({ data, error }: { data: T; error: any }) => {
             if (error) {
+              if (typeof startReq === "function") {
+                this.dispatch(failReq(error));
+              }
+
               throw new Error(error);
+            }
+
+            if (typeof startReq === "function") {
+              this.dispatch(successReq(data));
             }
 
             return data;
@@ -30,4 +48,10 @@ class Api {
   }
 }
 
-export default Api;
+export const configureApi = (store: Store) => {
+  return new Api(store.dispatch);
+};
+
+export const ApiProvider = Provider;
+
+export const ApiContext = Context;

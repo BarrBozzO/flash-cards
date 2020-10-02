@@ -18,6 +18,7 @@ type actionType = Action & {
 };
 
 export default function (params: paramsType) {
+  const name = params.name.toUpperCase();
   return {
     [`GET_${name}_SUCCESS`]: (draft: Draft<stateType>, action: actionType) => {
       draft.data = action.payload;

@@ -4,22 +4,31 @@ export type configType = {
 
 export type configItem = {
   name: string;
-  reducerName?: string;
+  reducer?: {
+    name: string;
+    initialState?: object;
+  };
   method: "get" | "post" | "patch" | "delete" | "put";
   url: string;
-  initialState?: object;
 };
+
+export type configItemWithReducer = Required<configItem>;
 
 const cfg: configType = {
   sets: {
     name: "sets",
     method: "get",
     url: "sets",
-    initialState: [],
+    reducer: {
+      name: "sets",
+      initialState: [],
+    },
   },
   addSet: {
     name: "addSet",
-    reducerName: "sets",
+    reducer: {
+      name: "sets",
+    },
     url: "sets",
     method: "post",
   },
