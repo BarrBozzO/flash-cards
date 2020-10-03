@@ -7,8 +7,9 @@ export interface SetsState {
 }
 
 export interface TermsState {
-  terms: Term[];
+  data: Term[];
   loading: boolean;
+  error: string | null;
 }
 
 export interface StoreData {

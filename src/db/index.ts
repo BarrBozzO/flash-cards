@@ -35,11 +35,14 @@ export class DB {
     }
   }
 
-  get(url: string) {
+  get<T>(url: string, queryParams: T) {
     return this.handler(
       axios({
         method: "GET",
         url: `${this.path}/${url}`,
+        params: {
+          ...queryParams,
+        },
       })
     );
   }
@@ -57,14 +60,11 @@ export class DB {
     );
   }
 
-  delete<T>(url: string, payload: T) {
+  delete(url: string, payload: { id: string }) {
     return this.handler(
       axios({
         method: "DELETE",
-        url: `${this.path}/${url}`,
-        data: {
-          ...payload,
-        },
+        url: `${this.path}/${url}/${payload.id}`,
       })
     );
   }

@@ -32,6 +32,47 @@ const cfg: configType = {
     url: "sets",
     method: "post",
   },
+  getSet: {
+    name: "getSet",
+    reducer: {
+      name: "sets",
+    },
+    url: "sets",
+    method: "get",
+  },
+  deleteSet: {
+    name: "deleteSet",
+    reducer: {
+      name: "sets",
+    },
+    url: "sets",
+    method: "delete",
+  },
+  terms: {
+    name: "terms",
+    reducer: {
+      name: "terms",
+      initialState: [],
+    },
+    url: "terms",
+    method: "get",
+  },
+  addTerm: {
+    name: "addTerm",
+    reducer: {
+      name: "terms",
+    },
+    url: "terms",
+    method: "post",
+  },
+  deleteTerm: {
+    name: "removeTerm",
+    reducer: {
+      name: "terms",
+    },
+    url: "terms",
+    method: "delete",
+  },
 };
 
 export default cfg;

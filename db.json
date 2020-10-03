@@ -18,56 +18,23 @@
       ]
     },
     {
-      "name": "awd",
-      "description": "awdda",
-      "terms": [],
-      "id": "22b9a356-385e-419a-a368-d51e38641ec5"
-    },
-    {
-      "id": "ebd3e7f4-6f7d-4b14-a1fe-dec4f76a90c9"
-    },
-    {
-      "name": "awd",
-      "description": "awdda",
-      "terms": [],
-      "id": "771c085f-4e59-4d60-9e51-5c02ee0a8dee"
-    },
-    {
-      "name": "awd",
-      "description": "awdda",
-      "terms": [],
-      "id": "1bd08515-2f4f-4a01-82ab-3aeec3b33147"
-    },
-    {
-      "name": "awd",
-      "description": "awdda",
-      "terms": [],
-      "id": "357606fd-d3ff-46f8-b85b-8218efef327b"
-    },
-    {
-      "name": "awd",
-      "description": "awdda",
-      "terms": [],
-      "id": "4b724532-0591-4cb3-ae12-a16eefd925b5"
-    },
-    {
-      "name": "awd",
-      "description": "awdda",
-      "terms": [],
-      "id": "563caa50-71a1-4bfb-84d7-3d3863c278bc"
-    },
-    {
       "name": "",
       "description": "",
-      "id": "8da9c279-040b-496e-9b40-6487c2413190"
+      "id": "da28f6f7-72c2-4b74-8bd1-c087bdd610b5"
     }
   ],
   "terms": [
     {
-      "id": "first",
-      "value": "Stall",
-      "description": "Stop about engine",
+      "id": "85932987-fc2b-4776-bfef-d52558b572cd",
+      "value": "new one",
+      "description": "lwkfj",
       "set_id": "wof39ufjwofgjw"
+    },
+    {
+      "id": "498f3d4c-a16d-4c30-bd77-71f58f08e225",
+      "value": "checking",
+      "description": "alkdj",
+      "set_id": "da28f6f7-72c2-4b74-8bd1-c087bdd610b5"
     }
   ]
 }
