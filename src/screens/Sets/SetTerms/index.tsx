@@ -1,9 +1,4 @@
-import React, {
-  FunctionComponent,
-  useEffect,
-  useContext,
-  useState,
-} from "react";
+import React, { FunctionComponent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { actionCreators } from "store/actions";
 import { match } from "react-router";
@@ -30,20 +25,8 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
     return state.sets.data.find((set: Set) => set.id === setId);
   });
   const dispatch = useDispatch();
-  // const DB = useContext(DBContext);
 
   const [isAdding, setIsAdding] = useState(false);
-
-  // useEffect(() => {
-  //   dispatch(actionCreators.getSetsStart());
-  //   DB.get("sets")
-  //     .then((sets: Set[]) => {
-  //       dispatch(actionCreators.getSetsSuccess(sets));
-  //     })
-  //     .catch((err) => {
-  //       dispatch(actionCreators.getSetsError(err));
-  //     });
-  // }, [setId]);
 
   if (typeof set === "undefined") {
     return (

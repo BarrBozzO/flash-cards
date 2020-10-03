@@ -45,7 +45,6 @@ export class DB {
   }
 
   post<T>(url: string, payload: T) {
-    debugger;
     return this.handler(
       axios({
         method: "POST",
@@ -53,6 +52,42 @@ export class DB {
         data: {
           ...payload,
           id: v4(),
+        },
+      })
+    );
+  }
+
+  delete<T>(url: string, payload: T) {
+    return this.handler(
+      axios({
+        method: "DELETE",
+        url: `${this.path}/${url}`,
+        data: {
+          ...payload,
+        },
+      })
+    );
+  }
+
+  patch<T>(url: string, payload: T) {
+    return this.handler(
+      axios({
+        method: "PATCH",
+        url: `${this.path}/${url}`,
+        data: {
+          ...payload,
+        },
+      })
+    );
+  }
+
+  put<T>(url: string, payload: T) {
+    return this.handler(
+      axios({
+        method: "PUT",
+        url: `${this.path}/${url}`,
+        data: {
+          ...payload,
         },
       })
     );

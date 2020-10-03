@@ -2,6 +2,9 @@ import { Reducer, Action } from "redux";
 import produce, { Draft } from "immer";
 import getReducer from "./getReducer";
 import postReducer from "./postReducer";
+import putReducer from "./putReducer";
+import patchReducer from "./patchReducer";
+import deleteReducer from "./deleteReducer";
 import { configItemWithReducer } from "api/config";
 
 type stateType = {
@@ -18,9 +21,9 @@ type actionType = Action & {
 const METHOD_TO_REDUCER = {
   post: postReducer,
   get: getReducer,
-  // "patch": () => ({}),
-  // "delete": () => ({}),
-  // "put": () => ({})
+  patch: patchReducer,
+  delete: deleteReducer,
+  put: putReducer,
 };
 
 const createReducer = (items: configItemWithReducer[]): Reducer => {
@@ -41,7 +44,6 @@ const createReducer = (items: configItemWithReducer[]): Reducer => {
       initialState.data = providedInitialState;
     }
 
-    // @ts-ignore
     const itemHandlers = METHOD_TO_REDUCER[item.method]({
       name,
       initialState,

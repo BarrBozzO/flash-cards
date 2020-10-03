@@ -24,24 +24,31 @@ export default class Api {
         if (typeof startReq === "function") {
           this.dispatch(startReq());
         }
-        return this.db[route.method](route.url, payload)
-          .then(({ data, error }: { data: T; error: any }) => {
-            if (error) {
+
+        const dbReq = this.db[route.method].bind(this.db) as (
+          url: string,
+          payload: T
+        ) => Promise<{ status: number; data: any } | { error: any }>;
+
+        return dbReq(route.url, payload)
+          .then((response) => {
+            if ("error" in response) {
               if (typeof startReq === "function") {
-                this.dispatch(failReq(error));
+                this.dispatch(failReq(response.error));
               }
 
-              throw new Error(error);
+              throw new Error(response.error);
             }
 
             if (typeof startReq === "function") {
-              this.dispatch(successReq(data));
+              this.dispatch(successReq(response.data));
             }
 
-            return data;
+            return { data: response.data };
           })
           .catch((error: any) => {
             console.error(error);
+            return { error };
           });
       };
     }
