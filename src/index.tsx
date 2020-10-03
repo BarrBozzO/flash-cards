@@ -4,12 +4,17 @@ import "./index.css";
 import App from "./App";
 import { Provider } from "react-redux";
 import appStore from "./store/";
+import { configureApi, ApiProvider } from "./api";
 import * as serviceWorker from "./serviceWorker";
+
+const api = configureApi(appStore);
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={appStore}>
-      <App />
+      <ApiProvider api={api}>
+        <App />
+      </ApiProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

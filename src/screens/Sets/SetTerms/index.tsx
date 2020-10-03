@@ -1,9 +1,4 @@
-import React, {
-  FunctionComponent,
-  useEffect,
-  useContext,
-  useState,
-} from "react";
+import React, { FunctionComponent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { actionCreators } from "store/actions";
 import { match } from "react-router";
@@ -11,7 +6,6 @@ import { Set, Term } from "data/entities";
 import Table, { TableRow } from "components/Table";
 import Button from "components/Button";
 import useTypedSelector from "hooks/useTypedSelector";
-import DBContext from "db/index";
 import AddTermForm from "./AddTermForm";
 import { ReactComponent as DeleteIcon } from "assets/icons/delete.svg";
 
@@ -28,23 +22,11 @@ type Props = {
 const Terms: FunctionComponent<Props> = ({ match }) => {
   const setId = match.params.id;
   const set: Set | undefined = useTypedSelector((state) => {
-    return state.sets.sets.find((set: Set) => set.id === setId);
+    return state.sets.data.find((set: Set) => set.id === setId);
   });
   const dispatch = useDispatch();
-  const DB = useContext(DBContext);
 
   const [isAdding, setIsAdding] = useState(false);
-
-  useEffect(() => {
-    dispatch(actionCreators.getSetsStart());
-    DB.get("sets")
-      .then((sets: Set[]) => {
-        dispatch(actionCreators.getSetsSuccess(sets));
-      })
-      .catch((err) => {
-        dispatch(actionCreators.getSetsError(err));
-      });
-  }, [setId]);
 
   if (typeof set === "undefined") {
     return (

@@ -27,7 +27,7 @@
     "uuid": "^8.3.0"
   },
   "scripts": {
-    "json": "json-server db.json -p 4600",
+    "json": "json-server db.json -p 4600 -d 500",
     "serve": "react-scripts start",
     "start": "npm-run-all -p serve json",
     "build": "react-scripts build",

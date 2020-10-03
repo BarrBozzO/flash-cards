@@ -1,7 +1,9 @@
-import axios from "axios";
-import { createContext } from "react";
+import axios, { AxiosPromise } from "axios";
+import { v4 } from "uuid";
 
-class DB {
+export class DB {
+  [k: string]: any;
+
   private protocol: string = "http://";
   private domain: string = "localhost";
   private port: string = "4600";
@@ -10,20 +12,84 @@ class DB {
     return `${this.protocol}${this.domain}:${this.port}`;
   }
 
-  get(dataName: string) {
-    return axios({
-      method: "GET",
-      url: `${this.path}/${dataName}`,
-    })
-      .then((response) => {
-        return response.data;
+  private async handler(
+    req: AxiosPromise
+  ): Promise<
+    | {
+        status: number;
+        data: any;
+      }
+    | { error: any }
+  > {
+    try {
+      const response = await req;
+      return {
+        status: response.status,
+        data: response.data,
+      };
+    } catch (err) {
+      console.error(err);
+      return {
+        error: err,
+      };
+    }
+  }
+
+  get(url: string) {
+    return this.handler(
+      axios({
+        method: "GET",
+        url: `${this.path}/${url}`,
       })
-      .catch((err) => {
-        console.error(err);
-      });
+    );
+  }
+
+  post<T>(url: string, payload: T) {
+    return this.handler(
+      axios({
+        method: "POST",
+        url: `${this.path}/${url}`,
+        data: {
+          ...payload,
+          id: v4(),
+        },
+      })
+    );
+  }
+
+  delete<T>(url: string, payload: T) {
+    return this.handler(
+      axios({
+        method: "DELETE",
+        url: `${this.path}/${url}`,
+        data: {
+          ...payload,
+        },
+      })
+    );
+  }
+
+  patch<T>(url: string, payload: T) {
+    return this.handler(
+      axios({
+        method: "PATCH",
+        url: `${this.path}/${url}`,
+        data: {
+          ...payload,
+        },
+      })
+    );
+  }
+
+  put<T>(url: string, payload: T) {
+    return this.handler(
+      axios({
+        method: "PUT",
+        url: `${this.path}/${url}`,
+        data: {
+          ...payload,
+        },
+      })
+    );
   }
 }
-
-const db = new DB();
-
-export default createContext(db);

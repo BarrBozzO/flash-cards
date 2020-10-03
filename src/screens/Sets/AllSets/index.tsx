@@ -1,49 +1,48 @@
-import React, { useEffect, useContext } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { actionCreators } from "store/actions";
 import useTypedSelector from "hooks/useTypedSelector";
-import DBContext from "db/index";
-import { Set } from "data/entities";
+import useApi from "hooks/useApi";
 import Card from "components/Card";
 import Button from "components/Button";
 
 import styles from "./AllSets.module.scss";
 
 function AllSets() {
-  const DB = useContext(DBContext);
-  const sets = useTypedSelector((state) => state.sets.sets);
-  const dispatch = useDispatch();
-
-  const dispatchAddSet = (data: Set[] | Set) => {
-    dispatch(actionCreators.addSet(data));
-  };
+  const API = useApi();
+  const sets = useTypedSelector((state) => state.sets.data);
+  const [isAdding, setIsAdding] = useState(false);
 
   useEffect(() => {
-    dispatch(actionCreators.getSetsStart());
-    DB.get("sets")
-      .then((sets: Set[]) => {
-        dispatch(actionCreators.getSetsSuccess(sets));
-      })
-      .catch((err) => {
-        dispatch(actionCreators.getSetsError(err));
-      });
+    API.sets();
   }, []);
 
-  const handleAddSet = () => {
-    dispatchAddSet({
-      id: "#1",
-      name: "awd",
-      description: "awdda",
-      terms: [],
-    });
+  const handleAddSet = async () => {
+    const payload = {
+      name: "",
+      description: "",
+    };
+
+    try {
+      setIsAdding(true);
+      const response = await API.addSet(payload);
+
+      if (response.error) {
+        throw new Error(response.error);
+      }
+    } catch (err) {
+      // nothing
+    } finally {
+      setIsAdding(false);
+    }
   };
 
   return (
     <div className={styles["sets"]}>
       <h1 className={styles["sets-title"]}>All Sets</h1>
       <div>
-        <Button onClick={handleAddSet}>add set</Button>
+        <Button onClick={handleAddSet} disabled={isAdding}>
+          add set
+        </Button>
         <div className={styles["sets-grid"]}>
           {sets.map((set) => (
             <Link key={set.id} to={`/sets/${set.id}`}>
