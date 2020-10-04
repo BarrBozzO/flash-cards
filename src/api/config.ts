@@ -73,6 +73,14 @@ const cfg: configType = {
     url: "terms",
     method: "post",
   },
+  updateTerm: {
+    name: "updateTerm",
+    reducer: {
+      name: "terms",
+    },
+    url: "terms",
+    method: "patch",
+  },
   deleteTerm: {
     name: "removeTerm",
     reducer: {
