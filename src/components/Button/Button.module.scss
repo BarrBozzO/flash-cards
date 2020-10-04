@@ -1,0 +1,26 @@
+.button {
+  display: inline-block;
+
+  color: #ffffff;
+  background-color: #f52b74;
+  border: 1px solid #f52b74;
+
+  cursor: pointer;
+  user-select: none;
+
+  border-radius: 8px;
+  padding: 8px 16px;
+  text-transform: uppercase;
+  font-weight: 500;
+
+  &--alternative {
+    background-color: #ffffff;
+    border: 1px solid #f52b74;
+  }
+
+  &--disabled {
+    opacity: 0.6;
+
+    cursor: default;
+  }
+}

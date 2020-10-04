@@ -1,0 +1,40 @@
+@import "~assets/styles/_variables.scss";
+
+.set {
+  display: block;
+
+  padding: 20px;
+
+  &-term {
+    text-align: left;
+
+    &__value {
+      flex: 0 0 20%;
+
+      padding: 16px;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &__delete {
+      flex: 0 0 24px;
+      padding: 0 16px;
+
+      > svg {
+        display: block;
+        width: 100%;
+        fill: $gray-1;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__add-term {
+    display: flex;
+    flex-direction: row-reverse;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}

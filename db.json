@@ -1,0 +1,50 @@
+{
+  "sets": [
+    {
+      "id": "wof39ufjwofgjw",
+      "name": "Test Set",
+      "description": "Test Description",
+      "terms": [
+        {
+          "id": "first",
+          "value": "Stall",
+          "description": "Stop about engine"
+        },
+        {
+          "id": "second",
+          "value": "Pay off",
+          "description": "Eventually get profit from smth after many efforts"
+        }
+      ]
+    },
+    {
+      "name": "Title",
+      "description": "Description2",
+      "id": "da28f6f7-72c2-4b74-8bd1-c087bdd610b5"
+    }
+  ],
+  "terms": [
+    {
+      "id": "85932987-fc2b-4776-bfef-d52558b572cd",
+      "value": "new one",
+      "description": "lwkfj",
+      "set_id": "wof39ufjwofgjw"
+    },
+    {
+      "id": "498f3d4c-a16d-4c30-bd77-71f58f08e225",
+      "value": "checking",
+      "description": "alkdj",
+      "set_id": "da28f6f7-72c2-4b74-8bd1-c087bdd610b5"
+    },
+    {
+      "name": "New Set",
+      "description": "about programmign",
+      "id": "7c83d79e-b762-4998-88e6-8f7d93cc998e"
+    },
+    {
+      "name": "title",
+      "description": "efff",
+      "id": "d549072e-c9bc-4c0c-b245-63ec55f91766"
+    }
+  ]
+}

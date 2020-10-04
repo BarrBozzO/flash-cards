@@ -1,0 +1,57 @@
+@import "~assets/styles/_variables";
+
+.update-set {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  padding: 20px;
+
+  &__input {
+    flex: 1 0 100px;
+    position: relative;
+
+    & + & {
+      margin-left: 10px;
+    }
+
+    > input {
+      width: 100%;
+      font-size: 14px;
+      padding-bottom: 8px;
+
+      &,
+      &:hover,
+      &:active,
+      &:focus {
+        border: 0;
+        outline: none;
+      }
+    }
+
+    &::after {
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      content: "";
+      border-bottom: 2px solid $gray-1;
+      pointer-events: none;
+    }
+  }
+
+  &__controls {
+    flex: 0 0 auto;
+
+    &-item {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      fill: $gray-1;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+  }
+}
