@@ -1,11 +1,13 @@
 import React, { FunctionComponent, useState, useEffect } from "react";
 import useApi from "hooks/useApi";
 import { match } from "react-router";
+import { Link } from "react-router-dom";
 import { Set, Term } from "data/entities";
 import Table, { TableRow } from "components/Table";
 import Button from "components/Button";
 import useTypedSelector from "hooks/useTypedSelector";
 import AddTermForm from "./AddTermForm";
+import UpdateSetForm from "./UpdateSetForm";
 import { ReactComponent as DeleteIcon } from "assets/icons/delete.svg";
 
 import styles from "./SetTerms.module.scss";
@@ -29,6 +31,7 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
   });
   const [isAdding, setIsAdding] = useState(false);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     API.getSet({ id: setId });
@@ -56,7 +59,6 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
     };
 
     try {
-      setIsAdding(true);
       const response = await API.addTerm(payload);
 
       if (response.error) {
@@ -83,6 +85,25 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
       // nothing
     } finally {
       setIsDeleting(null);
+    }
+  };
+
+  const onUpdateSet = async (values: { name: string; description: string }) => {
+    const payload = {
+      ...values,
+      id: setId,
+    };
+
+    try {
+      const response = await API.updateSet(payload);
+
+      if (response.error) {
+        throw new Error(response.error);
+      }
+
+      setIsEditing(false);
+    } catch (err) {
+      // nothing
     }
   };
 
@@ -127,7 +148,28 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
 
   return (
     <div className={styles["set"]}>
-      <h1>{set.name}</h1>
+      {isEditing ? (
+        <UpdateSetForm
+          set={set}
+          onUpdate={onUpdateSet}
+          onCancel={() => setIsEditing(false)}
+        />
+      ) : (
+        <>
+          <h1>{set.name}</h1>
+          <div>{set.description}</div>
+          <Button
+            className={styles["set__edit-btn"]}
+            onClick={() => setIsEditing(true)}
+          >
+            Edit
+          </Button>
+        </>
+      )}
+
+      <div>
+        <Link to="/sets">Back to sets</Link>
+      </div>
 
       <div className={styles["set__add-term"]}>
         <Button disabled={isAdding} onClick={handleAddTerm}>

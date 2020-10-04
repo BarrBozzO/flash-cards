@@ -30,7 +30,7 @@ export default function (params: paramsType) {
         (item: dataItemType) => item.id === putId
       );
 
-      if (putIndex) {
+      if (putIndex > -1) {
         draft.data[putIndex] = {
           ...action.payload,
         };

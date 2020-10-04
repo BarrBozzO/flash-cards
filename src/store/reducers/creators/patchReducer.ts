@@ -7,7 +7,7 @@ type paramsType = {
 };
 
 type stateType = {
-  data: any;
+  data: { id: string }[];
   loading: boolean;
   error: null | string;
 };
@@ -33,7 +33,7 @@ export default function (params: paramsType) {
         (item: dataItemType) => item.id === patchId
       );
 
-      if (patchIndex) {
+      if (patchIndex > -1) {
         draft.data[patchIndex] = {
           ...action.payload,
         };

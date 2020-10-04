@@ -69,25 +69,27 @@ export class DB {
     );
   }
 
-  patch<T>(url: string, payload: T) {
+  patch<T>(url: string, payload: T & { id: string }) {
     return this.handler(
       axios({
         method: "PATCH",
-        url: `${this.path}/${url}`,
+        url: `${this.path}/${url}/${payload.id}`,
         data: {
           ...payload,
+          id: undefined,
         },
       })
     );
   }
 
-  put<T>(url: string, payload: T) {
+  put<T>(url: string, payload: T & { id: string }) {
     return this.handler(
       axios({
         method: "PUT",
-        url: `${this.path}/${url}`,
+        url: `${this.path}/${url}/${payload.id}`,
         data: {
           ...payload,
+          id: undefined,
         },
       })
     );

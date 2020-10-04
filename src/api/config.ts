@@ -32,6 +32,14 @@ const cfg: configType = {
     url: "sets",
     method: "post",
   },
+  updateSet: {
+    name: "updateSet",
+    reducer: {
+      name: "sets",
+    },
+    url: "sets",
+    method: "patch",
+  },
   getSet: {
     name: "getSet",
     reducer: {

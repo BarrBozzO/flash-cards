@@ -33,7 +33,7 @@ export default function (params: paramsType) {
         (item: dataItemType) => item.id === deleteId
       );
 
-      if (deleteIndex) {
+      if (deleteIndex > -1) {
         draft.data.splice(deleteIndex, 1);
       }
 
