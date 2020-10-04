@@ -4,18 +4,24 @@ import { ReactComponent as TickIcon } from "assets/icons/tick.svg";
 import { ReactComponent as CancelIcon } from "assets/icons/cancel.svg";
 import { Term } from "data/entities";
 
-import styles from "./AddTermForm.module.scss";
+import styles from "./TermForm.module.scss";
 
 type Props = {
-  onCreate: (term: Term) => void;
+  term?: Term;
+  onSubmit: (term: Term) => void;
   onCancel: () => void;
 };
 
-const AddRow: FunctionComponent<Props> = ({ onCreate, onCancel }) => {
+const TermForm: FunctionComponent<Props> = ({
+  term = {},
+  onSubmit,
+  onCancel,
+}) => {
   const [values, setValues] = useState<Term>({
     id: v4(),
     value: "",
     description: "",
+    ...term,
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,7 +32,7 @@ const AddRow: FunctionComponent<Props> = ({ onCreate, onCancel }) => {
   };
 
   const handleSubmit = () => {
-    onCreate(values);
+    onSubmit(values);
   };
 
   return (
@@ -65,4 +71,4 @@ const AddRow: FunctionComponent<Props> = ({ onCreate, onCancel }) => {
   );
 };
 
-export default AddRow;
+export default TermForm;

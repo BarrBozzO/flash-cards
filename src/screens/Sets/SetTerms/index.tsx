@@ -6,9 +6,10 @@ import { Set, Term } from "data/entities";
 import Table, { TableRow } from "components/Table";
 import Button from "components/Button";
 import useTypedSelector from "hooks/useTypedSelector";
-import AddTermForm from "./AddTermForm";
+import TermForm from "./TermForm";
 import UpdateSetForm from "./UpdateSetForm";
 import { ReactComponent as DeleteIcon } from "assets/icons/delete.svg";
+import { ReactComponent as EditIcon } from "assets/icons/edit.svg";
 
 import styles from "./SetTerms.module.scss";
 
@@ -32,6 +33,7 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
   const [isAdding, setIsAdding] = useState(false);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [isEditingTerm, setIsEditingTerm] = useState<string | null>(null);
 
   useEffect(() => {
     API.getSet({ id: setId });
@@ -68,6 +70,24 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
       // nothing
     } finally {
       setIsAdding(false);
+    }
+  };
+
+  const onUpdateTerm = async (term: Term) => {
+    const payload = {
+      ...term,
+    };
+
+    try {
+      const response = await API.updateTerm(payload);
+
+      if (response.error) {
+        throw new Error(response.error);
+      }
+
+      setIsEditingTerm(null);
+    } catch (err) {
+      // nothing
     }
   };
 
@@ -116,8 +136,8 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
       <Table className={styles["set-terms"]}>
         {isAdding && (
           <TableRow>
-            <AddTermForm
-              onCreate={onCreateTerm}
+            <TermForm
+              onSubmit={onCreateTerm}
               onCancel={() => setIsAdding(false)}
             />
           </TableRow>
@@ -126,19 +146,32 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
         {terms.map((term: Term) => {
           return (
             <TableRow key={term.id} className={styles["set-term"]}>
-              <div className={styles["set-term__value"]}>{term.value}</div>
-              <div className={styles["set-term__description"]}>
-                {term.description}
-              </div>
-              <div className={styles["set-term__delete"]}>
-                <DeleteIcon
-                  onClick={
-                    isDeleting === term.id
-                      ? undefined
-                      : () => handleDeleteTerm(term.id)
-                  }
+              {isEditingTerm ? (
+                <TermForm
+                  term={term}
+                  onSubmit={onUpdateTerm}
+                  onCancel={() => setIsEditingTerm(null)}
                 />
-              </div>
+              ) : (
+                <>
+                  <div className={styles["set-term__value"]}>{term.value}</div>
+                  <div className={styles["set-term__description"]}>
+                    {term.description}
+                  </div>
+                  <div className={styles["set-term__edit"]}>
+                    <EditIcon onClick={() => setIsEditingTerm(term.id)} />
+                  </div>
+                  <div className={styles["set-term__delete"]}>
+                    <DeleteIcon
+                      onClick={
+                        isDeleting === term.id
+                          ? undefined
+                          : () => handleDeleteTerm(term.id)
+                      }
+                    />
+                  </div>
+                </>
+              )}
             </TableRow>
           );
         })}
