@@ -18,7 +18,7 @@ const cfg: configType = {
   sets: {
     name: "sets",
     method: "get",
-    url: "sets",
+    url: "collections",
     reducer: {
       name: "sets",
       initialState: [],
@@ -29,7 +29,7 @@ const cfg: configType = {
     reducer: {
       name: "sets",
     },
-    url: "sets",
+    url: "collections",
     method: "post",
   },
   updateSet: {
@@ -37,7 +37,7 @@ const cfg: configType = {
     reducer: {
       name: "sets",
     },
-    url: "sets",
+    url: "collections",
     method: "patch",
   },
   getSet: {
@@ -45,7 +45,7 @@ const cfg: configType = {
     reducer: {
       name: "sets",
     },
-    url: "sets",
+    url: "collections",
     method: "get",
   },
   deleteSet: {
@@ -53,7 +53,7 @@ const cfg: configType = {
     reducer: {
       name: "sets",
     },
-    url: "sets",
+    url: "collections",
     method: "delete",
   },
   terms: {
