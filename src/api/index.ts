@@ -40,11 +40,17 @@ export default class Api {
               throw new Error(response.error);
             }
 
-            if (typeof startReq === "function") {
-              this.dispatch(successReq(response.data));
+            let { data } = response;
+
+            if (route.transformResponse) {
+              data = route.transformResponse(data);
             }
 
-            return { data: response.data };
+            if (typeof startReq === "function") {
+              this.dispatch(successReq(data));
+            }
+
+            return { data };
           })
           .catch((error: any) => {
             console.error(error);

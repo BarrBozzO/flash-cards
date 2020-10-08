@@ -10,6 +10,7 @@ export type configItem = {
   };
   method: "get" | "post" | "patch" | "delete" | "put";
   url: string;
+  transformResponse?: (...args: any[]) => any;
 };
 
 export type configItemWithReducer = Required<configItem>;
@@ -22,6 +23,18 @@ const cfg: configType = {
     reducer: {
       name: "sets",
       initialState: [],
+    },
+    transformResponse: (response) => {
+      const { data } = response;
+      const sets = data.map(
+        (item: { data: any; ref: { "@ref": { id: string } } }) => {
+          return {
+            ...item.data,
+            id: item.ref["@ref"].id,
+          };
+        }
+      );
+      return sets;
     },
   },
   addSet: {
@@ -43,10 +56,17 @@ const cfg: configType = {
   getSet: {
     name: "getSet",
     reducer: {
-      name: "sets",
+      name: "set",
     },
     url: "collections",
     method: "get",
+    transformResponse: (response) => {
+      const { data }: { data: any; ref: { "@ref": { id: string } } } = response;
+      return {
+          ...data.data,
+          id: data.ref["@ref"].id,
+        };
+    },
   },
   deleteSet: {
     name: "deleteSet",
@@ -64,6 +84,18 @@ const cfg: configType = {
     },
     url: "terms",
     method: "get",
+    transformResponse: (response) => {
+      const { data } = response;
+      const terms = data.map(
+        (item: { data: any; ref: { "@ref": { id: string } } }) => {
+          return {
+            ...item.data,
+            id: item.ref["@ref"].id,
+          };
+        }
+      );
+      return terms;
+    },
   },
   addTerm: {
     name: "addTerm",

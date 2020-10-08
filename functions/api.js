@@ -13,7 +13,26 @@ exports.handler = (event, context, callback) => {
     case "GET":
       if (segments.length <= 2) {
         const id = segments[1];
+
         request = db.get(collection, id);
+
+        if (!id) {
+          const queryParams = event.queryStringParameters;
+          const filters = queryParams.filters
+            ? JSON.parse(queryParams.filters)
+            : {};
+
+          request = request.then((response) => {
+            if (!response.error) {
+              return {
+                data: filterData(collection, response.data, filters), // filter response
+              };
+            }
+
+            return response;
+          });
+        }
+
         break;
       } else {
         return {
@@ -110,3 +129,24 @@ exports.handler = (event, context, callback) => {
       };
     });
 };
+
+function filterData(collection, data, filters) {
+  if (!filters) return data;
+
+  try {
+    if (collection === "terms") {
+      if (filters.set_id) {
+        return data.filter((item) => {
+          return (
+            item.data && item.data.set && item.data.set.id === filters.set_id
+          );
+        });
+      }
+    }
+
+    return data;
+  } catch (err) {
+    console.error(err);
+    throw new Error("Wrong filters object provided");
+  }
+}

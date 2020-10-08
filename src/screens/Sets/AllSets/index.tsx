@@ -9,7 +9,10 @@ import styles from "./AllSets.module.scss";
 
 function AllSets() {
   const API = useApi();
-  const sets = useTypedSelector((state) => state.sets.data);
+  const sets = useTypedSelector((state) => {
+    // debugger;
+    return state.sets.data;
+  });
   const [isAdding, setIsAdding] = useState(false);
 
   useEffect(() => {

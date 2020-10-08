@@ -33,13 +33,14 @@ export class DB {
     }
   }
 
-  get<T>(url: string, queryParams: T) {
+  get<T>(url: string, queryParams: T & { id: string }) {
     return this.handler(
       axios({
         method: "GET",
-        url: `${this.path}/${url}`,
+        url: `${this.path}/${url}${queryParams && queryParams.id ? `/${queryParams.id}` : ""}`,
         params: {
           ...queryParams,
+          id: undefined,
         },
       })
     );

@@ -26,7 +26,7 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
   const setId = match.params.id;
   const [set, terms]: [Set | undefined, Term[]] = useTypedSelector((state) => {
     return [
-      state.sets.data.find((set: Set) => set.id === setId),
+      state.set.data,
       state.terms.data,
     ];
   });
@@ -38,7 +38,9 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
   useEffect(() => {
     API.getSet({ id: setId });
     API.terms({
-      set_id: setId,
+      filters: {
+        set_id: setId,
+      }
     });
   }, [setId]);
 
