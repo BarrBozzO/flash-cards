@@ -46,7 +46,7 @@ const cfg: configType = {
     url: "collections",
     method: "post",
     transformResponse: (response) => {
-      debugger;
+      // debugger;
       const { data, ref }: { data: any; ref: { "@ref": { id: string } } } = response;
       return {
           ...data,
@@ -63,7 +63,7 @@ const cfg: configType = {
     url: "collections",
     method: "patch",
     transformResponse: (response) => {
-      debugger;
+      // debugger;
       const { data, ref }: { data: any; ref: { "@ref": { id: string } } } = response;
       return {
           ...data,
