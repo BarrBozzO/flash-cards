@@ -56,9 +56,10 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
     setIsAdding(true);
   };
 
-  const onCreateTerm = async (term: Term) => {
+  const onCreateTerm = async (term: Term) => {    
     const payload = {
-      ...term,
+      value: term.value,
+      description: term.description,
       set_id: setId,
     };
 

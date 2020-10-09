@@ -39,6 +39,7 @@ const createReducer = (items: configItemWithReducer[]): Reducer => {
   items.forEach((item) => {
     const name = item.name;
     const providedInitialState = item.reducer.initialState;
+    const type = item.reducer.type;
 
     if (providedInitialState) {
       initialState.data = providedInitialState;
@@ -47,6 +48,7 @@ const createReducer = (items: configItemWithReducer[]): Reducer => {
     const itemHandlers = METHOD_TO_REDUCER[item.method]({
       name,
       initialState,
+      type
     });
 
     handlers = { ...handlers, ...itemHandlers };

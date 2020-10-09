@@ -7,6 +7,7 @@ export type configItem = {
   reducer?: {
     name: string;
     initialState?: object;
+    type?: 'collection' | 'item' 
   };
   method: "get" | "post" | "patch" | "delete" | "put";
   url: string;
@@ -44,14 +45,31 @@ const cfg: configType = {
     },
     url: "collections",
     method: "post",
+    transformResponse: (response) => {
+      debugger;
+      const { data, ref }: { data: any; ref: { "@ref": { id: string } } } = response;
+      return {
+          ...data,
+          id: ref["@ref"].id,
+        };
+    },
   },
   updateSet: {
     name: "updateSet",
     reducer: {
-      name: "sets",
+      name: "set",
+      type: "item"
     },
     url: "collections",
     method: "patch",
+    transformResponse: (response) => {
+      debugger;
+      const { data, ref }: { data: any; ref: { "@ref": { id: string } } } = response;
+      return {
+          ...data,
+          id: ref["@ref"].id,
+        };
+    },
   },
   getSet: {
     name: "getSet",
@@ -104,6 +122,14 @@ const cfg: configType = {
     },
     url: "terms",
     method: "post",
+    transformResponse: (response) => {
+      // debugger;
+      const { data, ref }: { data: any; ref: { "@ref": { id: string } } } = response;
+      return {
+          ...data,
+          id: ref["@ref"].id,
+        };
+    },
   },
   updateTerm: {
     name: "updateTerm",
@@ -112,6 +138,13 @@ const cfg: configType = {
     },
     url: "terms",
     method: "patch",
+    transformResponse: (response) => {
+      const { data, ref }: { data: any; ref: { "@ref": { id: string } } } = response;
+      return {
+          ...data,
+          id: ref["@ref"].id,
+        };
+    },
   },
   deleteTerm: {
     name: "removeTerm",
@@ -120,6 +153,13 @@ const cfg: configType = {
     },
     url: "terms",
     method: "delete",
+    transformResponse: (response) => {
+      const { data, ref }: { data: any; ref: { "@ref": { id: string } } } = response;
+      return {
+          ...data,
+          id: ref["@ref"].id,
+        };
+    },
   },
 };
 

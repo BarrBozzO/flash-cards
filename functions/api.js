@@ -42,15 +42,19 @@ exports.handler = (event, context, callback) => {
       }
     case "POST": {
       const params = JSON.parse(event.body);
-      request = db.create(collection, {
-        name: params.name,
-        description: params.description,
-        set_id: params.set_id,
-      });
+      request = db.create(
+        collection,
+        {
+          value: params.value,
+          description: params.description,
+          set_id: params.set_id,
+        },
+        transformCreatePayload(collection)
+      );
       break;
     }
     case "PUT":
-      if (segments.length === 1) {
+      if (segments.length === 2) {
         const id = segments[1];
         const params = JSON.parse(event.body);
         request = db.replace(collection, id, {
@@ -67,14 +71,20 @@ exports.handler = (event, context, callback) => {
         };
       }
     case "PATCH":
-      if (segments.length === 1) {
+      if (segments.length === 2) {
         const id = segments[1];
         const params = JSON.parse(event.body);
-        request = db.update(collection, id, {
-          name: params.name,
-          description: params.description,
-          set_id: params.set_id,
-        });
+
+        request = db.update(
+          collection,
+          id,
+          {
+            name: params.name,
+            description: params.description,
+            set_id: params.set_id,
+          },
+          transformUpdatePayload(collection)
+        );
         break;
       } else {
         return {
@@ -84,7 +94,7 @@ exports.handler = (event, context, callback) => {
         };
       }
     case "DELETE":
-      if (segments.length === 1) {
+      if (segments.length === 2) {
         const id = segments[1];
         request = db.remove(collection, id);
         break;
@@ -149,4 +159,30 @@ function filterData(collection, data, filters) {
     console.error(err);
     throw new Error("Wrong filters object provided");
   }
+}
+
+function transformUpdatePayload(collection) {
+  if (collection === "terms") {
+    return (data, q) => {
+      return {
+        ...data,
+        set: q.Ref(q.Collection("collections"), data.set_id),
+      };
+    };
+  }
+
+  return (data) => data;
+}
+
+function transformCreatePayload(collection) {
+  if (collection === "terms") {
+    return (data, q) => {
+      return {
+        ...data,
+        set: q.Ref(q.Collection("collections"), data.set_id),
+      };
+    };
+  }
+
+  return (data) => data;
 }

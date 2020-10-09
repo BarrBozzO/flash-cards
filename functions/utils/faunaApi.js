@@ -6,12 +6,12 @@ const client = new faunadb.Client({
 });
 
 class FaunaAPI {
-  async create(collection, params) {
+  async create(collection, params, transformPayload) {
     try {
       const created = await client.query(
         q.Create(q.Collection(collection), {
           data: {
-            ...params,
+            ...transformPayload(params, q),
           },
         })
       );
@@ -24,12 +24,12 @@ class FaunaAPI {
     }
   }
 
-  async update(collection, id, params) {
+  async update(collection, id, params, transformPayload) {
     try {
       const updated = await client.query(
         q.Update(q.Ref(q.Collection(collection), id), {
           data: {
-            ...params,
+            ...transformPayload(params, q),
           },
         })
       );
