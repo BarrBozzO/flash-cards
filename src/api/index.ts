@@ -1,9 +1,16 @@
 import { Dispatch, Store } from "redux";
+import GoTrue from 'gotrue-js';
 import { DB } from "db";
 import config from "./config";
 import Provider from "./provider";
 import Context from "./context";
 import { getRouteActionCreators } from "store";
+
+const auth = new GoTrue({
+  APIUrl: process.env.REACT_APP_IDENTITY_URL,
+  audience: '',
+  setCookie: false,
+});
 
 export default class Api {
   private db: DB = new DB();
@@ -58,6 +65,34 @@ export default class Api {
           });
       };
     }
+  }
+
+  signup(email: string, password: string) {
+    return auth.signup(email, password).then((response) => {
+      return {
+        email: response.email,
+        success: true
+      }
+    }).catch((error) => {
+      console.error(error);
+      return {
+        error
+      };
+    });
+  }
+
+  signin(email: string, password: string) {
+    return auth.login(email, password).then((response) => {
+      return {
+        email: response.email,
+        success: true
+      }
+    }).catch((error) => {
+      console.error(error);
+      return {
+        error
+      };
+    });
   }
 }
 
