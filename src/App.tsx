@@ -5,7 +5,7 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-import { Sets, Main, SignIn, SignUp } from "./screens";
+import { Sets, Main, Auth } from "./screens";
 import "./App.css";
 
 function App() {
@@ -13,8 +13,7 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
-          <Route exact path="/auth/signin" component={SignIn} />
-          <Route exact path="/auth/signup" component={SignUp} />
+          <Route path="/auth" component={Auth} />
           <Route path="/sets" component={Sets} />
           <Route path="/" component={Main} />
           <Redirect to="/" />

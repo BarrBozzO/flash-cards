@@ -2,7 +2,6 @@ import { createStore, applyMiddleware, ActionCreator, Action } from "redux";
 import logger from "redux-logger";
 import apiConfig, { configItem } from "api/config";
 import { createRootReducer, hasReducer } from "./reducers";
-import { apiActionCreatorParams } from "./types";
 
 const rootReducer = createRootReducer(apiConfig);
 

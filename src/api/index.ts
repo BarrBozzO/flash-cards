@@ -5,6 +5,7 @@ import config from "./config";
 import Provider from "./provider";
 import Context from "./context";
 import { getRouteActionCreators } from "store";
+import { authActionCreators } from "store/actions/actionCreators";
 
 const auth = new GoTrue({
   APIUrl: process.env.REACT_APP_IDENTITY_URL,
@@ -81,18 +82,21 @@ export default class Api {
     });
   }
 
-  signin(email: string, password: string) {
-    return auth.login(email, password).then((response) => {
-      return {
-        email: response.email,
-        success: true
-      }
-    }).catch((error) => {
+  async signin(email: string, password: string) {
+    this.dispatch(authActionCreators.signInStart());
+
+    try {
+      const user = await auth.login(email, password);
+      this.dispatch(authActionCreators.signInSuccess(user));
+
+      return { data: user };
+    } catch(error) {
+      this.dispatch(authActionCreators.signInError(error));
       console.error(error);
       return {
         error
       };
-    });
+    }
   }
 }
 

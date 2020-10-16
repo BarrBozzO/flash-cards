@@ -1,6 +1,7 @@
 import { combineReducers, Reducer } from "redux";
 import { configItem, configItemWithReducer, configType } from "api/config";
-import createReducer from "./creators";
+import createReducer from "./creators"; 
+import authReducer from "./auth";
 
 export const hasReducer = (item: configItem): item is configItemWithReducer => {
   return item.hasOwnProperty("reducer");
@@ -44,6 +45,7 @@ export const createRootReducer = (config: configType): Reducer => {
 
   return combineReducers({
     ...generatedReducers,
+    auth: authReducer
   });
 };
 

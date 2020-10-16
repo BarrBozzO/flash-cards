@@ -19,6 +19,27 @@ export enum TERM_ACTION_TYPES {
   UPDATE_TERM = "UPDATE_TERM",
 }
 
+export enum AUTH_ACTION_TYPES {
+  AUTH_SIGNIN_START = "AUTH_SIGNIN_START",
+  AUTH_SIGNIN_SUCCESS = "AUTH_SIGNIN_SUCCESS",
+  AUTH_SIGNIN_ERROR = "AUTH_SIGNIN_ERROR",
+  AUTH_SIGNUP_START = "AUTH_SIGNUP_START",
+  AUTH_SIGNUP_SUCCESS = "AUTH_SIGNUP_SUCCESS",
+  AUTH_SIGNUP_ERROR = "AUTH_SIGNUP_ERROR",
+}
+
+export interface signInAction extends Action<AUTH_ACTION_TYPES.AUTH_SIGNIN_START> {}
+
+export interface signInSuccessAction extends Action<AUTH_ACTION_TYPES.AUTH_SIGNIN_SUCCESS> {
+  payload: {
+    email: string
+  }
+}
+
+export interface signInErrorAction extends Action<AUTH_ACTION_TYPES.AUTH_SIGNIN_ERROR> {
+  error: string
+}
+
 export interface addSetAction extends Action<SET_ACTION_TYPES.ADD_SET> {
   payload: Set | Set[];
 }

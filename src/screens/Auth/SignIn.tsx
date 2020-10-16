@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, ReactElement } from 'react';
+import {  useHistory } from "react-router-dom";
 import Button from "components/Button";
 import useApi from "hooks/useApi";
 
-function SignIn() {
+
+function SignIn(): ReactElement {
     const API = useApi();
     const [values, setValues] = useState({
         email: '',
         password: '',
     });
     const [isLoading, setIsLoading] = useState(false);
+    const history = useHistory();
 
     const handleInpuChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValues({
@@ -20,12 +23,12 @@ function SignIn() {
     const handleSubmit = async () => {
         try {
             const signed = await API.signin(values.email, values.password);
-
+            debugger;
             if ('error' in signed) {
                 throw new Error('Something went wrong');
             }
 
-            window.location.replace('/');
+            history.replace('/');
         } 
         catch (error){
             setIsLoading(false);
