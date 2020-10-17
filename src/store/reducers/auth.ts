@@ -10,14 +10,17 @@ const initialState = {
 
 const AuthReducer = produce((draft, action) => {
     switch (action.type) {
+        case AUTH_ACTION_TYPES.AUTH_SIGNUP_START:
         case AUTH_ACTION_TYPES.AUTH_SIGNIN_START: {
             draft.loading = true;
         }
+        case AUTH_ACTION_TYPES.AUTH_SIGNUP_SUCCESS:
         case AUTH_ACTION_TYPES.AUTH_SIGNIN_SUCCESS: {
             draft.loading = false;
             draft.data = action.payload;
             draft.error = null;
         }
+        case AUTH_ACTION_TYPES.AUTH_SIGNUP_ERROR:
         case AUTH_ACTION_TYPES.AUTH_SIGNIN_ERROR: {
             draft.loading = false;
             draft.error = action.payload;

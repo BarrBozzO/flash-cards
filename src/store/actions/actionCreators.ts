@@ -14,6 +14,9 @@ import {
   signInAction,
   signInErrorAction,
   signInSuccessAction,
+  signUpAction,
+  signUpErrorAction,
+  signUpSuccessAction,
   AUTH_ACTION_TYPES
 } from "./actionTypes";
 import { Set, Term } from "data/entities";
@@ -34,7 +37,23 @@ export const signInError = (error: string): signInErrorAction => ({
   error
 });
 
-export const authActionCreators = { signInStart, signInSuccess, signInError };
+export const signUpStart = (): signUpAction => ({
+  type: AUTH_ACTION_TYPES.AUTH_SIGNUP_START,
+});
+
+export const signUpSuccess = (data: any): signUpSuccessAction => ({
+  type: AUTH_ACTION_TYPES.AUTH_SIGNUP_SUCCESS,
+  payload: {
+    email: data.email
+  }
+});
+
+export const signUpError = (error: string): signUpErrorAction => ({
+  type: AUTH_ACTION_TYPES.AUTH_SIGNUP_ERROR,
+  error
+});
+
+export const authActionCreators = { signInStart, signInSuccess, signInError,  signUpStart, signUpSuccess, signUpError};
 
 export const getSetsStart = (): getSetsAction => ({
   type: SETS_ACTION_TYPES.SETS_FETCHING_START,

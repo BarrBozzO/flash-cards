@@ -40,6 +40,18 @@ export interface signInErrorAction extends Action<AUTH_ACTION_TYPES.AUTH_SIGNIN_
   error: string
 }
 
+export interface signUpAction extends Action<AUTH_ACTION_TYPES.AUTH_SIGNUP_START> {}
+
+export interface signUpSuccessAction extends Action<AUTH_ACTION_TYPES.AUTH_SIGNUP_SUCCESS> {
+  payload: {
+    email: string
+  }
+}
+
+export interface signUpErrorAction extends Action<AUTH_ACTION_TYPES.AUTH_SIGNUP_ERROR> {
+  error: string
+}
+
 export interface addSetAction extends Action<SET_ACTION_TYPES.ADD_SET> {
   payload: Set | Set[];
 }
