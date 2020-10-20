@@ -28,7 +28,11 @@ export const signInStart = (): signInAction => ({
 export const signInSuccess = (data: any): signInSuccessAction => ({
   type: AUTH_ACTION_TYPES.AUTH_SIGNIN_SUCCESS,
   payload: {
-    email: data.email
+    email: data.email,
+    id: data.id,
+    token: {
+        ...data.token
+    }
   }
 });
 
@@ -44,7 +48,11 @@ export const signUpStart = (): signUpAction => ({
 export const signUpSuccess = (data: any): signUpSuccessAction => ({
   type: AUTH_ACTION_TYPES.AUTH_SIGNUP_SUCCESS,
   payload: {
-    email: data.email
+    email: data.email,
+    id: data.id,
+    token: {
+        ...data.token
+    }
   }
 });
 

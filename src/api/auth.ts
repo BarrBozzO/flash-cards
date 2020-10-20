@@ -9,10 +9,12 @@ const auth = new GoTrue({
     setCookie: false,
   });
 
-function addMethod([succesActionCreator, errorActionCreator]: [any, any]) {
+function addMethod(authMethod: 'login' | 'signup', [startActionCreator, succesActionCreator, errorActionCreator]: [any, any, any]) {
     return async function (this: { dispatch: Dispatch }, email: string, password: string) {
         try {
-            const user: AuthResponse = await auth.signup(email, password);
+          this.dispatch(startActionCreator());
+          
+            const user: AuthResponse = await auth[authMethod](email, password);
       
             this.dispatch(succesActionCreator(user));
             return { data: user };
@@ -42,43 +44,21 @@ type Constructor = new (...args: any[]) => {
 };
 
 function AuthMixin<TBase extends Constructor>(Base: TBase) {
-    return class AuthMixin extends Base {
-        async signup(this: { dispatch: Dispatch }, email: string, password: string) {
-            try {
-              const user: AuthResponse = await auth.signup(email, password);
-        
-              this.dispatch(authActionCreators.signInSuccess(user));
-              return { data: user };
-            } catch(error) {
-              this.dispatch(authActionCreators.signInError(error));
-              console.error(error);
-              return {
-                error
-              };
-            }
-          }
-    
-          async signin(this: { dispatch: Dispatch },email: string, password: string) {
-            this.dispatch(authActionCreators.signInStart());
-        
-            try {
-              const user: AuthResponse = await auth.login(email, password);
-              this.dispatch(authActionCreators.signInSuccess(user));
-        
-              return { data: user };
-            } catch(error) {
-              this.dispatch(authActionCreators.signInError(error));
-              console.error(error);
-              return {
-                error
-              };
-            }
-          }
+    class AuthMixin extends Base {
+      public signIn: (this: { dispatch: Dispatch }, email: string, password: string) => Promise<{ data: AuthResponse } | { error: string } >;
+      public signUp: (this: { dispatch: Dispatch }, email: string, password: string) => Promise<{ data: AuthResponse } | { error: string } >;
+
+      constructor(...args: any[]) {
+        super(...args);
+
+        this.signIn = addMethod('login', [authActionCreators.signInStart, authActionCreators.signInSuccess, authActionCreators.signInError]);
+        this.signUp = addMethod('signup', [authActionCreators.signUpStart, authActionCreators.signUpSuccess, authActionCreators.signUpError]);
+      }
     }
+
+    return AuthMixin;
 }
 
-AuthMixin['signIn'] = addMethod([authActionCreators.signInSuccess, authActionCreators.signInError]);
-AuthMixin['signUp'] = addMethod([authActionCreators.signInSuccess, authActionCreators.signUpError]);
 
 
 export default AuthMixin;

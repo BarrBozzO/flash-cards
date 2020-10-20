@@ -20,7 +20,7 @@ function SignUp() {
 
     const handleSubmit = async () => {
         try {
-            const signed = await API.signup(values.email, values.password);
+            const signed = await API.signUp(values.email, values.password);
 
             if ('error' in signed) {
                 throw new Error('Something went wrong');

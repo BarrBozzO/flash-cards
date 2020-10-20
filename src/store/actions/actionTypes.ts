@@ -32,7 +32,9 @@ export interface signInAction extends Action<AUTH_ACTION_TYPES.AUTH_SIGNIN_START
 
 export interface signInSuccessAction extends Action<AUTH_ACTION_TYPES.AUTH_SIGNIN_SUCCESS> {
   payload: {
-    email: string
+    email: string;
+    id: string;
+    token: object;
   }
 }
 
@@ -44,7 +46,9 @@ export interface signUpAction extends Action<AUTH_ACTION_TYPES.AUTH_SIGNUP_START
 
 export interface signUpSuccessAction extends Action<AUTH_ACTION_TYPES.AUTH_SIGNUP_SUCCESS> {
   payload: {
-    email: string
+    email: string;
+    id: string;
+    token: object;
   }
 }
 

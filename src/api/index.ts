@@ -9,7 +9,7 @@ import { getRouteActionCreators } from "store";
 
 class Api {
   private db: DB = new DB();
-  private dispatch: Dispatch;
+  protected dispatch: Dispatch;
   [key: string]: any;
 
   constructor(dispatch: Dispatch) {
@@ -63,10 +63,11 @@ class Api {
   }
 }
 
-export default AuthMixin(Api);
+
+export const ApiWithAuth = AuthMixin(Api);
 
 export const configureApi = (store: Store) => {
-  return new Api(store.dispatch);
+  return new ApiWithAuth(store.dispatch);
 };
 
 export const ApiProvider = Provider;

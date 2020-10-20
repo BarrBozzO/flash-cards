@@ -1,5 +1,5 @@
 import React, { useState, ReactElement } from 'react';
-import {  useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Button from "components/Button";
 import useApi from "hooks/useApi";
 
@@ -22,8 +22,8 @@ function SignIn(): ReactElement {
 
     const handleSubmit = async () => {
         try {
-            const signed = await API.signin(values.email, values.password);
             debugger;
+            const signed = await API.signIn(values.email, values.password);
             if ('error' in signed) {
                 throw new Error('Something went wrong');
             }
