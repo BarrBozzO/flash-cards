@@ -3,11 +3,13 @@ import { DB } from "db";
 import config from "./config";
 import Provider from "./provider";
 import Context from "./context";
+import AuthMixin from './auth';
 import { getRouteActionCreators } from "store";
 
-export default class Api {
+
+class Api {
   private db: DB = new DB();
-  private dispatch: Dispatch;
+  protected dispatch: Dispatch;
   [key: string]: any;
 
   constructor(dispatch: Dispatch) {
@@ -40,11 +42,17 @@ export default class Api {
               throw new Error(response.error);
             }
 
-            if (typeof startReq === "function") {
-              this.dispatch(successReq(response.data));
+            let { data } = response;
+
+            if (route.transformResponse) {
+              data = route.transformResponse(data);
             }
 
-            return { data: response.data };
+            if (typeof startReq === "function") {
+              this.dispatch(successReq(data));
+            }
+
+            return { data };
           })
           .catch((error: any) => {
             console.error(error);
@@ -55,8 +63,11 @@ export default class Api {
   }
 }
 
+
+export const ApiWithAuth = AuthMixin(Api);
+
 export const configureApi = (store: Store) => {
-  return new Api(store.dispatch);
+  return new ApiWithAuth(store.dispatch);
 };
 
 export const ApiProvider = Provider;

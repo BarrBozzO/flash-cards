@@ -4,12 +4,10 @@ import { v4 } from "uuid";
 export class DB {
   [k: string]: any;
 
-  private protocol: string = "http://";
-  private domain: string = "localhost";
-  private port: string = "4600";
+  private api = process.env.REACT_APP_API_URL;
 
   private get path() {
-    return `${this.protocol}${this.domain}:${this.port}`;
+    return this.api;
   }
 
   private async handler(
@@ -35,13 +33,14 @@ export class DB {
     }
   }
 
-  get<T>(url: string, queryParams: T) {
+  get<T>(url: string, queryParams: T & { id: string }) {
     return this.handler(
       axios({
         method: "GET",
-        url: `${this.path}/${url}`,
+        url: `${this.path}/${url}${queryParams && queryParams.id ? `/${queryParams.id}` : ""}`,
         params: {
           ...queryParams,
+          id: undefined,
         },
       })
     );

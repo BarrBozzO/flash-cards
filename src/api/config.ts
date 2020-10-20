@@ -7,9 +7,11 @@ export type configItem = {
   reducer?: {
     name: string;
     initialState?: object;
+    type?: 'collection' | 'item' 
   };
   method: "get" | "post" | "patch" | "delete" | "put";
   url: string;
+  transformResponse?: (...args: any[]) => any;
 };
 
 export type configItemWithReducer = Required<configItem>;
@@ -18,10 +20,22 @@ const cfg: configType = {
   sets: {
     name: "sets",
     method: "get",
-    url: "sets",
+    url: "collections",
     reducer: {
       name: "sets",
       initialState: [],
+    },
+    transformResponse: (response) => {
+      const { data } = response;
+      const sets = data.map(
+        (item: { data: any; ref: { "@ref": { id: string } } }) => {
+          return {
+            ...item.data,
+            id: item.ref["@ref"].id,
+          };
+        }
+      );
+      return sets;
     },
   },
   addSet: {
@@ -29,31 +43,55 @@ const cfg: configType = {
     reducer: {
       name: "sets",
     },
-    url: "sets",
+    url: "collections",
     method: "post",
+    transformResponse: (response) => {
+      // debugger;
+      const { data, ref }: { data: any; ref: { "@ref": { id: string } } } = response;
+      return {
+          ...data,
+          id: ref["@ref"].id,
+        };
+    },
   },
   updateSet: {
     name: "updateSet",
     reducer: {
-      name: "sets",
+      name: "set",
+      type: "item"
     },
-    url: "sets",
+    url: "collections",
     method: "patch",
+    transformResponse: (response) => {
+      // debugger;
+      const { data, ref }: { data: any; ref: { "@ref": { id: string } } } = response;
+      return {
+          ...data,
+          id: ref["@ref"].id,
+        };
+    },
   },
   getSet: {
     name: "getSet",
     reducer: {
-      name: "sets",
+      name: "set",
     },
-    url: "sets",
+    url: "collections",
     method: "get",
+    transformResponse: (response) => {
+      const { data }: { data: any; ref: { "@ref": { id: string } } } = response;
+      return {
+          ...data.data,
+          id: data.ref["@ref"].id,
+        };
+    },
   },
   deleteSet: {
     name: "deleteSet",
     reducer: {
       name: "sets",
     },
-    url: "sets",
+    url: "collections",
     method: "delete",
   },
   terms: {
@@ -64,6 +102,18 @@ const cfg: configType = {
     },
     url: "terms",
     method: "get",
+    transformResponse: (response) => {
+      const { data } = response;
+      const terms = data.map(
+        (item: { data: any; ref: { "@ref": { id: string } } }) => {
+          return {
+            ...item.data,
+            id: item.ref["@ref"].id,
+          };
+        }
+      );
+      return terms;
+    },
   },
   addTerm: {
     name: "addTerm",
@@ -72,6 +122,14 @@ const cfg: configType = {
     },
     url: "terms",
     method: "post",
+    transformResponse: (response) => {
+      // debugger;
+      const { data, ref }: { data: any; ref: { "@ref": { id: string } } } = response;
+      return {
+          ...data,
+          id: ref["@ref"].id,
+        };
+    },
   },
   updateTerm: {
     name: "updateTerm",
@@ -80,6 +138,13 @@ const cfg: configType = {
     },
     url: "terms",
     method: "patch",
+    transformResponse: (response) => {
+      const { data, ref }: { data: any; ref: { "@ref": { id: string } } } = response;
+      return {
+          ...data,
+          id: ref["@ref"].id,
+        };
+    },
   },
   deleteTerm: {
     name: "removeTerm",
@@ -88,6 +153,13 @@ const cfg: configType = {
     },
     url: "terms",
     method: "delete",
+    transformResponse: (response) => {
+      const { data, ref }: { data: any; ref: { "@ref": { id: string } } } = response;
+      return {
+          ...data,
+          id: ref["@ref"].id,
+        };
+    },
   },
 };
 

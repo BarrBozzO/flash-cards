@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import Api, { ApiContext } from "api";
+import { ApiContext, ApiWithAuth } from "api";
 
 function useApi() {
   const api = useContext(ApiContext);
@@ -8,7 +8,7 @@ function useApi() {
     throw new Error("Api should be set");
   }
 
-  return api as Api;
+  return api as any;
 }
 
 export default useApi;
