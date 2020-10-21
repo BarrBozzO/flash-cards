@@ -6,6 +6,12 @@ export interface SetsState {
   error: string | null;
 }
 
+export interface SetState {
+  data: Set;
+  loading: boolean;
+  error: string | null;
+}
+
 export interface TermsState {
   data: Term[];
   loading: boolean;
@@ -14,6 +20,7 @@ export interface TermsState {
 
 export interface StoreData {
   sets: SetsState;
+  set: SetState;
   terms: TermsState;
 }
 
