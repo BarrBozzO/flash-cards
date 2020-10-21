@@ -6,6 +6,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import { Sets, Main, Auth } from "./screens";
+import { ToastContainer } from "react-toastify";
 import "./App.css";
 
 function App() {
@@ -19,6 +20,15 @@ function App() {
           <Redirect to="/" />
         </Switch>
       </Router>
+      <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnHover 
+      />
     </div>
   );
 }
