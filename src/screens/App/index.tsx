@@ -5,12 +5,17 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-import { Sets, Main, Auth } from "./screens";
-import "./App.css";
+import { Sets, Main, Auth } from "../";
+import Theme, { Toggler as ToggleTheme } from "components/Theme";
+
+import styles from "./App.module.scss";
+
 
 function App() {
   return (
-    <div className="App">
+    <Theme>
+      <div className={styles['app-content']}>
+      <ToggleTheme />
       <Router>
         <Switch>
           <Route path="/auth" component={Auth} />
@@ -19,7 +24,8 @@ function App() {
           <Redirect to="/" />
         </Switch>
       </Router>
-    </div>
+      </div>
+    </Theme>
   );
 }
 

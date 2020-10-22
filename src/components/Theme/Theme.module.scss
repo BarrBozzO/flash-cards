@@ -1,0 +1,16 @@
+@import "~assets/styles/_variables";
+
+.theme {
+  &--light {
+    --theme-bg-color: #{$light-bg-color};
+    --theme-text-color: #{$light-text-color};
+  }
+
+  &--dark {
+    --theme-bg-color: #{$dark-bg-color};
+    --theme-text-color: #{$dark-text-color};
+  }
+
+  background-color: var(--theme-bg-color);
+  color: var(--theme-text-color);
+}
