@@ -6,7 +6,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import { Sets, Main, Auth } from "../";
-import Theme from "components/Theme";
+import Theme, { Toggler as ToggleTheme } from "components/Theme";
 
 import styles from "./App.module.scss";
 
@@ -15,6 +15,7 @@ function App() {
   return (
     <Theme>
       <div className={styles['app-content']}>
+      <ToggleTheme />
       <Router>
         <Switch>
           <Route path="/auth" component={Auth} />

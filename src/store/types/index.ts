@@ -18,10 +18,15 @@ export interface TermsState {
   error: string | null;
 }
 
+export interface GeneralState {
+  theme: 'light' | 'dark'
+}
+
 export interface StoreData {
   sets: SetsState;
   set: SetState;
   terms: TermsState;
+  general: GeneralState
 }
 
 export type apiActionCreatorParams = {
