@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from "react-toastify";
 import Button from "components/Button";
 import useApi from "hooks/useApi";
 
@@ -29,6 +30,7 @@ function SignUp() {
             window.location.replace('/auth/signin');
         } 
         catch (error){
+            toast(error.toString());
             setIsLoading(false);
         }
     };
