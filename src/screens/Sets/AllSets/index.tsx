@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import useTypedSelector from "hooks/useTypedSelector";
 import useApi from "hooks/useApi";
 import Card from "components/Card";
@@ -33,7 +34,7 @@ function AllSets() {
         throw new Error(response.error);
       }
     } catch (err) {
-      // nothing
+      toast(err.toString());
     } finally {
       setIsAdding(false);
     }
