@@ -1,5 +1,6 @@
 import React, { useState, ReactElement } from 'react';
 import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 import Button from "components/Button";
 import useApi from "hooks/useApi";
 
@@ -22,7 +23,6 @@ function SignIn(): ReactElement {
 
     const handleSubmit = async () => {
         try {
-            debugger;
             const signed = await API.signIn(values.email, values.password);
             if ('error' in signed) {
                 throw new Error('Something went wrong');
@@ -31,6 +31,7 @@ function SignIn(): ReactElement {
             history.replace('/');
         } 
         catch (error){
+            toast(error.toString());
             setIsLoading(false);
         }
     };

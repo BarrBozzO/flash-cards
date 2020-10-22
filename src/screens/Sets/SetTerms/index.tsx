@@ -2,6 +2,7 @@ import React, { FunctionComponent, useState, useEffect } from "react";
 import useApi from "hooks/useApi";
 import { match } from "react-router";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { Set, Term } from "data/entities";
 import Table, { TableRow } from "components/Table";
 import Button from "components/Button";
@@ -70,7 +71,7 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
         throw new Error(response.error);
       }
     } catch (err) {
-      // nothing
+      toast(err.toString());
     } finally {
       setIsAdding(false);
     }
@@ -90,7 +91,7 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
 
       setIsEditingTerm(null);
     } catch (err) {
-      // nothing
+      toast(err.toString());
     }
   };
 
@@ -105,7 +106,7 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
         throw new Error(response.error);
       }
     } catch (err) {
-      // nothing
+      toast(err.toString());
     } finally {
       setIsDeleting(null);
     }
@@ -126,7 +127,7 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
 
       setIsEditing(false);
     } catch (err) {
-      // nothing
+      toast(err.toString());
     }
   };
 

@@ -7,14 +7,26 @@ import {
 } from "react-router-dom";
 import { Sets, Main, Auth } from "../";
 import Theme, { Toggler as ToggleTheme } from "components/Theme";
+import { ToastContainer, toast } from "react-toastify";
 
+import 'react-toastify/dist/ReactToastify.css';
 import styles from "./App.module.scss";
 
-
 function App() {
+  toast.configure();
+
   return (
     <Theme>
       <div className={styles['app-content']}>
+      <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnHover 
+      />
       <ToggleTheme />
       <Router>
         <Switch>
