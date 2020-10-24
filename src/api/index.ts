@@ -10,14 +10,23 @@ import { getRouteActionCreators } from "store";
 class Api {
   private db: DB = new DB();
   protected dispatch: Dispatch;
+  protected getAccessToken: () => string;
   [key: string]: any;
 
-  constructor(dispatch: Dispatch) {
-    this.dispatch = dispatch;
+  constructor(store: Store) {
+    this.dispatch = store.dispatch;
+    this.getAccessToken = () => {
+      const state = store.getState();
+
+      const token = state.auth.data && state.auth.data.token && state.auth.data.token.access_token;
+
+      return token || '';
+    };
 
     for (const key in config) {
       const route = config[key];
 
+      // add class method
       this[key] = <T = any>(payload: any) => {
         const [startReq, successReq, failReq] = getRouteActionCreators<T>(
           route
@@ -31,6 +40,8 @@ class Api {
           url: string,
           payload: T
         ) => Promise<{ status: number; data: any } | { error: any }>;
+
+          this.db.token = this.getAccessToken();
 
         return dbReq(route.url, payload)
           .then((response) => {
@@ -67,7 +78,7 @@ class Api {
 export const ApiWithAuth = AuthMixin(Api);
 
 export const configureApi = (store: Store) => {
-  return new ApiWithAuth(store.dispatch);
+  return new ApiWithAuth(store);
 };
 
 export const ApiProvider = Provider;

@@ -6,12 +6,21 @@ const client = new faunadb.Client({
 });
 
 class FaunaAPI {
+  constructor() {
+    this._user = null;
+  }
+
+  set user (userId) {
+    this._user = userId;
+  }
+
   async create(collection, params, transformPayload) {
     try {
       const created = await client.query(
         q.Create(q.Collection(collection), {
           data: {
             ...transformPayload(params, q),
+            user: this._user
           },
         })
       );
@@ -26,15 +35,23 @@ class FaunaAPI {
 
   async update(collection, id, params, transformPayload) {
     try {
-      const updated = await client.query(
-        q.Update(q.Ref(q.Collection(collection), id), {
-          data: {
-            ...transformPayload(params, q),
-          },
-        })
+      const document = await client.query(
+        q.Get(q.Ref(q.Collection(collection), id))
       );
 
-      return updated;
+      if (document && document.data && document.data.user === this._user) {
+        const updated = await client.query(
+          q.Update(q.Ref(q.Collection(collection), id), {
+            data: {
+              ...transformPayload(params, q)
+            },
+          })
+        );
+  
+        return updated;
+      }
+
+      throw new Error();
     } catch (error) {
       return {
         error,
@@ -44,15 +61,24 @@ class FaunaAPI {
 
   async replace(collection, id, params) {
     try {
-      const replaced = await client.query(
-        q.Replace(q.Ref(q.Collection(collection), id), {
-          data: {
-            ...params,
-          },
-        })
+      const document = await client.query(
+        q.Get(q.Ref(q.Collection(collection), id))
       );
 
-      return replaced;
+      if (document && document.data && document.data.user === this._user) {
+        const replaced = await client.query(
+          q.Replace(q.Ref(q.Collection(collection), id), {
+            data: {
+              ...params,
+              user: this._user
+            },
+          })
+        );
+
+        return replaced;
+      }
+
+      throw new Error();
     } catch (error) {
       return {
         error,
@@ -62,11 +88,19 @@ class FaunaAPI {
 
   async remove(collection, id) {
     try {
-      const deleted = await client.query(
-        q.Delete(q.Ref(q.Collection(collection), id))
+      const document = await client.query(
+        q.Get(q.Ref(q.Collection(collection), id))
       );
+        
+      if (document && document.data && document.data.user === this._user) {
+        const deleted = await client.query(
+          q.Delete(q.Ref(q.Collection(collection), id))
+        );
 
-      return deleted;
+        return deleted;
+      }
+
+      throw new Error('Wrong document');
     } catch (error) {
       return {
         error,
@@ -81,13 +115,19 @@ class FaunaAPI {
           q.Get(q.Ref(q.Collection(collection), id))
         );
 
-        return {
-          data: document,
-        };
+        if (document && document.data && document.data.user === this._user) {
+          return {
+            data: document,
+          };  
+        }
+
+        return { data: null };
       }
 
       const refs = await client.query(
-        q.Paginate(q.Documents(q.Collection(collection)))
+        q.Paginate(
+          q.Match(q.Index(`${collection}Index`), this._user)
+        )
       );
 
       if (refs.data) {

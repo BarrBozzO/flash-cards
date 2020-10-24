@@ -5,6 +5,7 @@ export class DB {
   [k: string]: any;
 
   private api = process.env.REACT_APP_API_URL;
+  private _token = '';
 
   private get path() {
     return this.api;
@@ -33,6 +34,10 @@ export class DB {
     }
   }
 
+  set token(value: string) {
+    this._token = value;
+  }
+
   get<T>(url: string, queryParams: T & { id: string }) {
     return this.handler(
       axios({
@@ -42,6 +47,9 @@ export class DB {
           ...queryParams,
           id: undefined,
         },
+        headers: {
+          'authorization': `Bearer ${this._token}`
+        }
       })
     );
   }
@@ -55,6 +63,9 @@ export class DB {
           ...payload,
           id: v4(),
         },
+        headers: {
+          'authorization': `Bearer ${this._token}`
+        }
       })
     );
   }
@@ -64,6 +75,9 @@ export class DB {
       axios({
         method: "DELETE",
         url: `${this.path}/${url}/${payload.id}`,
+        headers: {
+          'authorization': `Bearer ${this._token}`
+        }
       })
     );
   }
@@ -77,6 +91,9 @@ export class DB {
           ...payload,
           id: undefined,
         },
+        headers: {
+          'authorization': `Bearer ${this._token}`
+        }
       })
     );
   }
@@ -90,6 +107,9 @@ export class DB {
           ...payload,
           id: undefined,
         },
+        headers: {
+          'authorization': `Bearer ${this._token}`
+        }
       })
     );
   }

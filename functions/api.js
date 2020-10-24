@@ -1,8 +1,27 @@
 const FaunaAPI = require("./utils/faunaApi");
+const { getUserId } = require("./utils/user");
 
 const db = new FaunaAPI();
 
 exports.handler = (event, context, callback) => {
+  const { identity, user } = context.clientContext;
+
+  if (!identity || !user) {
+    return {
+      statusCode: 401,
+    };
+  }
+
+  const userId = getUserId(user);
+
+  if (!userId) {
+    return { 
+      statusCode: 401
+    };
+  }
+
+  db.user = userId;
+
   const path = event.path.replace(/\.netlify\/functions\/[^/]+/, "");
   const segments = path.split("/").filter((e) => e);
 
@@ -14,24 +33,30 @@ exports.handler = (event, context, callback) => {
       if (segments.length <= 2) {
         const id = segments[1];
 
-        request = db.get(collection, id);
+        request = db.get(collection, id).then((response) => {
+          if (!response.error) {
+            if (!id) {
+              const queryParams = event.queryStringParameters;
+              const filters = queryParams.filters
+                ? JSON.parse(queryParams.filters)
+                : {};
 
-        if (!id) {
-          const queryParams = event.queryStringParameters;
-          const filters = queryParams.filters
-            ? JSON.parse(queryParams.filters)
-            : {};
-
-          request = request.then((response) => {
-            if (!response.error) {
-              return {
-                data: filterData(collection, response.data, filters), // filter response
-              };
+                return {
+                  data: filterData(collection, response.data, filters), // filter response
+                };
+            } else {
+              if (response.data === null) {
+                return {
+                  error: {
+                    not_found: true
+                  }
+                }
+              }
             }
+          }
 
-            return response;
-          });
-        }
+          return response;
+        });
 
         break;
       } else {
@@ -44,11 +69,7 @@ exports.handler = (event, context, callback) => {
       const params = JSON.parse(event.body);
       request = db.create(
         collection,
-        {
-          value: params.value,
-          description: params.description,
-          set_id: params.set_id,
-        },
+        params,
         transformCreatePayload(collection)
       );
       break;
@@ -57,17 +78,13 @@ exports.handler = (event, context, callback) => {
       if (segments.length === 2) {
         const id = segments[1];
         const params = JSON.parse(event.body);
-        request = db.replace(collection, id, {
-          name: params.name,
-          description: params.description,
-          set_id: params.set_id,
-        });
+        request = db.replace(collection, id, params, transformReplacePayload(collection));
         break;
       } else {
         return {
           statusCode: 500,
           body:
-            "invalid segments in POST request, must be /.netlify/functions/db/123456",
+            "invalid segments in PUT request, must be /.netlify/functions/db/123456",
         };
       }
     case "PATCH":
@@ -78,11 +95,7 @@ exports.handler = (event, context, callback) => {
         request = db.update(
           collection,
           id,
-          {
-            name: params.name,
-            description: params.description,
-            set_id: params.set_id,
-          },
+          params,
           transformUpdatePayload(collection)
         );
         break;
@@ -90,7 +103,7 @@ exports.handler = (event, context, callback) => {
         return {
           statusCode: 500,
           body:
-            "invalid segments in POST request, must be /.netlify/functions/db/123456",
+            "invalid segments in PATCH request, must be /.netlify/functions/db/123456",
         };
       }
     case "DELETE":
@@ -117,10 +130,16 @@ exports.handler = (event, context, callback) => {
   return request
     .then((data) => {
       if (data.error) {
+        if (data.error['not_found']) {
+          return {
+            statusCode: 400 // netlify hangs if 404 xD
+          };
+        }
+
         return {
           statusCode: 400,
           body: JSON.stringify({
-            error: data.error,
+            error: data.error instanceof Error ? data.error.toString() : data.error,
           }),
         };
       }
@@ -165,8 +184,16 @@ function transformUpdatePayload(collection) {
   if (collection === "terms") {
     return (data, q) => {
       return {
-        ...data,
+        value: data.value,
+        description: data.description,
         set: q.Ref(q.Collection("collections"), data.set_id),
+      };
+    };
+  } else if (collection === 'collections') {
+    return (data, q) => {
+      return {
+        name: data.name,
+        description: data.description,
       };
     };
   }
@@ -178,8 +205,37 @@ function transformCreatePayload(collection) {
   if (collection === "terms") {
     return (data, q) => {
       return {
-        ...data,
+        value: data.value,
+        description: data.description,
         set: q.Ref(q.Collection("collections"), data.set_id),
+      };
+    };
+  } else if (collection === 'collections') {
+    return (data, q) => {
+      return {
+        name: data.name,
+        description: data.description,
+      };
+    };
+  }
+
+  return (data) => data;
+}
+
+function transformReplacePayload(collection) {
+  if (collection === "terms") {
+    return (data, q) => {
+      return {
+        value: data.value,
+        description: data.description,
+        set: data.set_id ? q.Ref(q.Collection("collections"), data.set_id) : undefined,
+      };
+    };
+  } else if (collection === 'collections') {
+    return (data, q) => {
+      return {
+        name: data.name,
+        description: data.description,
       };
     };
   }
