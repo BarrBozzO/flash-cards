@@ -150,7 +150,7 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
         {terms.map((term: Term) => {
           return (
             <TableRow key={term.id} className={styles["set-term"]}>
-              {isEditingTerm ? (
+              {isEditingTerm === term.id ? (
                 <TermForm
                   term={term}
                   onSubmit={onUpdateTerm}
