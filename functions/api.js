@@ -185,8 +185,7 @@ function transformUpdatePayload(collection) {
     return (data, q) => {
       return {
         value: data.value,
-        description: data.description,
-        set: q.Ref(q.Collection("collections"), data.set_id),
+        description: data.description
       };
     };
   } else if (collection === 'collections') {
@@ -207,7 +206,7 @@ function transformCreatePayload(collection) {
       return {
         value: data.value,
         description: data.description,
-        set: q.Ref(q.Collection("collections"), data.set_id),
+        set: data.set_idq.Ref(q.Collection("collections"), data.set_id),
       };
     };
   } else if (collection === 'collections') {

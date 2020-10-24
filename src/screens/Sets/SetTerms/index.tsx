@@ -79,7 +79,7 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
 
   const onUpdateTerm = async (term: Term) => {
     const payload = {
-      ...term,
+      ...term
     };
 
     try {

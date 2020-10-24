@@ -46,8 +46,8 @@ class Api {
         return dbReq(route.url, payload)
           .then((response) => {
             if ("error" in response) {
-              if (typeof startReq === "function") {
-                this.dispatch(failReq(response.error));
+              if (typeof failReq === "function") {
+                this.dispatch(failReq(response.error.message));
               }
 
               throw new Error(response.error);
@@ -59,7 +59,7 @@ class Api {
               data = route.transformResponse(data);
             }
 
-            if (typeof startReq === "function") {
+            if (typeof successReq === "function") {
               this.dispatch(successReq(data));
             }
 

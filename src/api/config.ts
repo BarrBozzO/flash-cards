@@ -108,6 +108,7 @@ const cfg: configType = {
         (item: { data: any; ref: { "@ref": { id: string } } }) => {
           return {
             ...item.data,
+            set: undefined,
             id: item.ref["@ref"].id,
           };
         }
