@@ -1,11 +1,27 @@
-import { createStore, applyMiddleware, ActionCreator, Action } from "redux";
+import { createStore, applyMiddleware, Action } from "redux";
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 import logger from "redux-logger";
 import apiConfig, { configItem } from "api/config";
 import { createRootReducer, hasReducer } from "./reducers";
 
+// redux persist config
+const persistConfig = {
+  key: 'root',
+  storage,
+}
+
+// create RootReducer
 const rootReducer = createRootReducer(apiConfig);
 
-const store = createStore(rootReducer, applyMiddleware(logger));
+// persist RootReducer
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
+// Create Redux Store
+const store = createStore(persistedReducer, applyMiddleware(logger));
+
+// persist Store
+export const persistor = persistStore(store);
 
 type routeActionCreators<T> = [
   () => Action,
