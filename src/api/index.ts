@@ -39,12 +39,21 @@ class Api {
         const dbReq = this.db[route.method].bind(this.db) as (
           url: string,
           payload: T
-        ) => Promise<{ status: number; data: any } | { error: any }>;
+        ) => Promise<{ status: number; data: any; logout: boolean; } | { error: any }>;
 
           this.db.token = this.getAccessToken();
 
         return dbReq(route.url, payload)
           .then((response) => {
+            if ("logout" in response) {
+              if (response.logout) {
+                this.dispatch({
+                  type: 'LOGOUT',
+                });
+                throw new Error('Authorization failed');
+              }
+            }
+
             if ("error" in response) {
               if (typeof failReq === "function") {
                 this.dispatch(failReq(response.error.message));

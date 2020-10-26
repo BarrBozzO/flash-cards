@@ -1,5 +1,6 @@
 import React, { ReactElement } from "react";
 import { Switch, Route, Redirect, match } from "react-router-dom";
+import useAuth from "hooks/useAuth";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 
@@ -12,6 +13,14 @@ type MatchParams = {
   };
 
  function Auth(props: Props): ReactElement {
+    const { isAuthenticated } = useAuth();
+
+    if (isAuthenticated) {
+      return (
+        <Redirect to="/" />
+      );
+    }
+
     return (
         <Switch>
             <Route exact path={`${props.match.path}/signin`} component={SignIn} />

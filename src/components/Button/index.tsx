@@ -26,7 +26,7 @@ const Button: FunctionComponent<Props> = ({
   };
 
   return (
-    <div
+    <button
       onClick={handleClick}
       className={cn(styles["button"], {
         [styles["button--alternative"]]: alternative,
@@ -35,7 +35,7 @@ const Button: FunctionComponent<Props> = ({
       })}
     >
       {children}
-    </div>
+    </button>
   );
 };
 

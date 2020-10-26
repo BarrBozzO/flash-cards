@@ -10,6 +10,9 @@ const initialState = {
 
 const AuthReducer = produce((draft, action) => {
     switch (action.type) {
+        case "LOGOUT":
+            draft.data = {};
+            break;
         case AUTH_ACTION_TYPES.AUTH_SIGNUP_START:
         case AUTH_ACTION_TYPES.AUTH_SIGNIN_START: {
             draft.loading = true;

@@ -19,6 +19,7 @@
   }
 
   &--disabled {
+    filter: brightness(150%);
     opacity: 0.6;
 
     cursor: default;

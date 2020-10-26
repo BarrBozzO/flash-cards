@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { Set, Term } from "data/entities";
 import Table, { TableRow } from "components/Table";
 import Button from "components/Button";
+import Preloader from "components/Preloader";
 import useTypedSelector from "hooks/useTypedSelector";
 import TermForm from "./TermForm";
 import UpdateSetForm from "./UpdateSetForm";
@@ -25,10 +26,11 @@ type Props = {
 const Terms: FunctionComponent<Props> = ({ match }) => {
   const API = useApi();
   const setId = match.params.id;
-  const [set, terms]: [Set | undefined, Term[]] = useTypedSelector((state) => {
+  const [set, terms, loading]: [Set | undefined, Term[], Boolean] = useTypedSelector((state) => {
     return [
       state.set.data,
       state.terms.data,
+      state.set.loading || state.terms.loading
     ];
   });
   const [isAdding, setIsAdding] = useState(false);
@@ -132,6 +134,12 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
   };
 
   const renderTermsTable = () => {
+    if (loading) {
+      return (
+        <Preloader size="lg" />
+      );
+    }
+
     if (!terms.length && !isAdding) {
       return <div>Nothing Found!</div>;
     }

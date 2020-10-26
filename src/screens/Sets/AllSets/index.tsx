@@ -5,14 +5,14 @@ import useTypedSelector from "hooks/useTypedSelector";
 import useApi from "hooks/useApi";
 import Card from "components/Card";
 import Button from "components/Button";
+import Preloader from "components/Preloader";
 
 import styles from "./AllSets.module.scss";
 
 function AllSets() {
   const API = useApi();
-  const sets = useTypedSelector((state) => {
-    // debugger;
-    return state.sets.data;
+  const { data: sets, loading } = useTypedSelector((state) => {
+    return state.sets;
   });
   const [isAdding, setIsAdding] = useState(false);
 
@@ -48,7 +48,7 @@ function AllSets() {
           add set
         </Button>
         <div className={styles["sets-grid"]}>
-          {sets.map((set) => (
+          {loading ? <Preloader size="lg" /> : sets.map((set) => (
             <Link key={set.id} to={`/sets/${set.id}`}>
               <Card className={styles["sets-grid__item"]}>
                 <div>{set.name}</div>

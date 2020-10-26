@@ -16,15 +16,17 @@ export class DB {
   ): Promise<
     | {
         status: number;
+        logout: boolean;
         data: any;
       }
-    | { error: any }
+    | { error: any;  }
   > {
     try {
       const response = await req;
       return {
         status: response.status,
         data: response.data,
+        logout: response.status === 401
       };
     } catch (err) {
       console.error(err);
