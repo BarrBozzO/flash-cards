@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState, useEffect } from "react";
 import useApi from "hooks/useApi";
 import { match } from "react-router";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Set, Term } from "data/entities";
 import Table, { TableRow } from "components/Table";
@@ -25,16 +25,17 @@ type Props = {
 
 const Terms: FunctionComponent<Props> = ({ match }) => {
   const API = useApi();
+  const history = useHistory();
   const setId = match.params.id;
   const [set, terms, loading]: [Set | undefined, Term[], Boolean] = useTypedSelector((state) => {
     return [
       state.set.data,
       state.terms.data,
-      state.set.loading || state.terms.loading
+      state.set.loading || state.terms.loading || setId !== state.set.data.id
     ];
   });
   const [isAdding, setIsAdding] = useState(false);
-  const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [isDeletingTerm, setIsDeletingTerm] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isEditingTerm, setIsEditingTerm] = useState<string | null>(null);
 
@@ -99,7 +100,7 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
 
   const handleDeleteTerm = async (id: string) => {
     try {
-      setIsDeleting(id);
+      setIsDeletingTerm(id);
       const response = await API.deleteTerm({
         id,
       });
@@ -110,7 +111,16 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
     } catch (err) {
       toast(err.toString());
     } finally {
-      setIsDeleting(null);
+      setIsDeletingTerm(null);
+    }
+  };
+
+  const handleDeleteSet = async () => {
+    try {
+      history.push('/sets');
+      const isDeleted = await API.deleteSet({ id: setId });
+    } catch (err) {
+      toast(err.toString());
     }
   };
 
@@ -176,7 +186,7 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
                   <div className={styles["set-term__delete"]}>
                     <DeleteIcon
                       onClick={
-                        isDeleting === term.id
+                        isDeletingTerm === term.id
                           ? undefined
                           : () => handleDeleteTerm(term.id)
                       }
@@ -208,6 +218,12 @@ const Terms: FunctionComponent<Props> = ({ match }) => {
             onClick={() => setIsEditing(true)}
           >
             Edit
+          </Button>
+          <Button
+            className={styles["set__delete-btn"]}
+            onClick={handleDeleteSet}
+          >
+            Delete
           </Button>
         </>
       )}
