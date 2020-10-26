@@ -206,7 +206,7 @@ function transformCreatePayload(collection) {
       return {
         value: data.value,
         description: data.description,
-        set: data.set_idq.Ref(q.Collection("collections"), data.set_id),
+        set: q.Ref(q.Collection("collections"), data.set_id),
       };
     };
   } else if (collection === 'collections') {
