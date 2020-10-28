@@ -4,10 +4,11 @@ import cn from "classnames";
 import styles from "./Button.module.scss";
 
 type Props = {
-  onClick: React.EventHandler<React.MouseEvent>;
+  onClick?: React.EventHandler<React.MouseEvent>;
   className?: string;
   alternative?: boolean;
   disabled?: boolean;
+  type?: "button" | "submit" | "reset";
 };
 
 const Button: FunctionComponent<Props> = ({
@@ -16,13 +17,16 @@ const Button: FunctionComponent<Props> = ({
   alternative = false,
   children,
   disabled = false,
+  type,
 }) => {
   const handleClick = (e: React.MouseEvent) => {
     if (disabled) {
       return;
     }
 
-    onClick(e);
+    if (onClick) {
+      onClick(e);
+    }
   };
 
   return (
@@ -33,6 +37,7 @@ const Button: FunctionComponent<Props> = ({
         [styles["button--disabled"]]: disabled,
         [className]: Boolean(className),
       })}
+      type={type}
     >
       {children}
     </button>
