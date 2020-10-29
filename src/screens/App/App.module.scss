@@ -1,3 +1,25 @@
-.app-content {
+.header {
+  background-color: var(--theme-bg-header);
+  color: var(--theme-text-color);
+
+  &-content {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+
+  &-title {
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 20px;
+  }
+}
+
+.content {
+  background-color: var(--theme-bg-header);
+}
+
+.layout {
   min-height: 100vh;
 }

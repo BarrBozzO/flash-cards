@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import useTypedSelector from "hooks/useTypedSelector";
 import cx from "classnames";
 import { toggleTheme } from "store/actions/actionCreators";
+import { ReactComponent as SunIcon } from "assets/icons/day-mode.svg";
+import { ReactComponent as MoonIcon } from "assets/icons/night-mode.svg";
 import { Switch } from "antd";
 
 import "antd/dist/antd.css";
@@ -23,13 +25,13 @@ export function Toggler() {
   const theme = useTypedSelector((state) => state.general.theme);
 
   return (
-    <div>
-      {"sun"}
+    <div className={styles["toggle"]}>
+      <SunIcon className={styles["toggle-icon"]} />
       <Switch
         checked={theme === "dark"}
         onChange={() => dispatch(toggleTheme())}
       />
-      {"moon"}
+      <MoonIcon className={styles["toggle-icon"]} />
     </div>
   );
 }

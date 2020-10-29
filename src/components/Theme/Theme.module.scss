@@ -3,14 +3,27 @@
 .theme {
   &--light {
     --theme-bg-color: #{$light-bg-color};
+    --theme-bg-header: #{$light-bg-color};
     --theme-text-color: #{$light-text-color};
   }
 
   &--dark {
     --theme-bg-color: #{$dark-bg-color};
+    --theme-bg-header: #{$dark-bg-color};
     --theme-text-color: #{$dark-text-color};
   }
 
   background-color: var(--theme-bg-color);
   color: var(--theme-text-color);
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+
+  &-icon {
+    width: 30px;
+    height: 30px;
+    margin: 0 10px;
+  }
 }
