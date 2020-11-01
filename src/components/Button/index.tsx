@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from "react";
 import cn from "classnames";
+import { Button } from "antd";
 
 import styles from "./Button.module.scss";
 
@@ -8,16 +9,16 @@ type Props = {
   className?: string;
   alternative?: boolean;
   disabled?: boolean;
-  type?: "button" | "submit" | "reset";
+  // type?: "button" | "submit" | "reset";
 };
 
-const Button: FunctionComponent<Props> = ({
+const CustomButton: FunctionComponent<Props> = ({
   onClick,
   className = "",
   alternative = false,
   children,
   disabled = false,
-  type,
+  // type,
 }) => {
   const handleClick = (e: React.MouseEvent) => {
     if (disabled) {
@@ -30,18 +31,17 @@ const Button: FunctionComponent<Props> = ({
   };
 
   return (
-    <button
+    <Button
       onClick={handleClick}
       className={cn(styles["button"], {
         [styles["button--alternative"]]: alternative,
         [styles["button--disabled"]]: disabled,
         [className]: Boolean(className),
       })}
-      type={type}
     >
       {children}
-    </button>
+    </Button>
   );
 };
 
-export default Button;
+export default CustomButton;

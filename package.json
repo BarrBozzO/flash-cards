@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^5.7.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -13,6 +14,7 @@
     "antd": "^4.7.3",
     "axios": "^0.19.2",
     "classnames": "^2.2.6",
+    "craco-antd": "^1.19.0",
     "faunadb": "^3.0.1",
     "gotrue-js": "^0.9.27",
     "immer": "^7.0.7",
@@ -33,11 +35,11 @@
   },
   "scripts": {
     "json": "json-server db.json -p 4600 -d 500",
-    "serve": "react-scripts start",
+    "serve": "craco start",
     "start": "npm-run-all -p serve json",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject"
   },
   "eslintConfig": {
     "extends": "react-app"

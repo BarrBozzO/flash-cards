@@ -7,7 +7,6 @@ import { ReactComponent as SunIcon } from "assets/icons/day-mode.svg";
 import { ReactComponent as MoonIcon } from "assets/icons/night-mode.svg";
 import { Switch } from "antd";
 
-import "antd/dist/antd.css";
 import styles from "./Theme.module.scss";
 
 function Theme(props: any) {

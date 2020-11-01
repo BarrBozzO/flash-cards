@@ -25,6 +25,12 @@
   }
 
   &-title {
+    &-container {
+      text-align: center;
+    }
+
     text-transform: uppercase;
+    font-size: 64px;
+    color: var(--theme-color-text);
   }
 }

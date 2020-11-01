@@ -13,6 +13,8 @@
     --theme-text-color: #{$dark-text-color};
   }
 
+  --theme-btn-bg: #{$theme-color};
+
   background-color: var(--theme-bg-color);
   color: var(--theme-text-color);
 }
